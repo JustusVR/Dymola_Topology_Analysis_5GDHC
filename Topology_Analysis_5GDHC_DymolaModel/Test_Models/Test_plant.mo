@@ -1,4 +1,4 @@
-within Topology_Analysis_5GDHC.Test_Models;
+within Topology_Analysis_5GDHC_DymolaModel.Test_Models;
 model Test_plant "Test of a pipe with multiple segments"
   extends Modelica.Icons.Example;
 
@@ -10,8 +10,8 @@ model Test_plant "Test of a pipe with multiple segments"
   Buildings.Fluid.Sensors.Temperature senTem_a(redeclare package Medium =
         Medium)
     annotation (Placement(transformation(extent={{130,20},{150,40}})));
-  DES.Ideal_T_JVR ideal_T_JVR(redeclare package Medium = Medium, m_flow_nominal
-      =1) annotation (Placement(transformation(extent={{180,20},{236,80}})));
+  DES.Ideal_T_JVR ideal_T_JVR(redeclare package Medium = Medium, m_flow_nominal=
+       1) annotation (Placement(transformation(extent={{180,20},{236,80}})));
   Building.Automated_Model_Building.Building_bidirectional
     building_bidirectional(redeclare package Medium = Medium)
     annotation (Placement(transformation(extent={{-60,20},{-4,80}})));

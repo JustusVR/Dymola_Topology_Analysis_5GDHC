@@ -1,4 +1,4 @@
-within Topology_Analysis_5GDHC.Test_Models;
+within Topology_Analysis_5GDHC_DymolaModel.Test_Models;
 model Test_Hx_CSV
 
 replaceable package Medium =
@@ -25,9 +25,9 @@ public
     tableOnFile=true,
     fileName=
         "/home/justus/Documents/Topology_Analysis_5GDHC/Resources/Loads/LookUp_Table/tester.mos",
-
     tableName="tab1")
     annotation (Placement(transformation(extent={{-52,28},{-32,48}})));
+
 equation
 
   connect(modTim.y, combiTable2D.u1) annotation (Line(points={{-79,60},{-68,60},

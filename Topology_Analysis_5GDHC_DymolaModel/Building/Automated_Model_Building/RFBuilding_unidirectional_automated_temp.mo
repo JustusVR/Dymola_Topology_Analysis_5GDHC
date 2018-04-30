@@ -1,4 +1,4 @@
-within Topology_Analysis_5GDHC.Building.Automated_Model_Building;
+within Topology_Analysis_5GDHC_DymolaModel.Building.Automated_Model_Building;
 model RFBuilding_unidirectional_automated_temp
 
   Modelica.Fluid.Interfaces.FluidPort_a port_a(

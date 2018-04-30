@@ -1,6 +1,6 @@
-within Topology_Analysis_5GDHC.DES.Ideal_Source.Valve_Control;
+within Topology_Analysis_5GDHC_DymolaModel.DES.Ideal_Source.Valve_Control;
 model Control_Valve_demo
-  Topology_Analysis_5GDHC.DES.Ideal_Source.Valve_Control.ValveControl
+  Topology_Analysis_5GDHC_DymolaModel.DES.Ideal_Source.Valve_Control.ValveControl
     valveControl annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,

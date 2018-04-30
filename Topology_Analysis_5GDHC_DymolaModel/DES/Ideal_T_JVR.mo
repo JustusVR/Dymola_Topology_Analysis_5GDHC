@@ -1,9 +1,9 @@
-within Topology_Analysis_5GDHC.DES;
+within Topology_Analysis_5GDHC_DymolaModel.DES;
 model Ideal_T_JVR
   "Ideal heating and cooling plant with leaving temperature as set point"
-  extends Topology_Analysis_5GDHC.DES.PartialTwoPortInterface_JVR(
+  extends Topology_Analysis_5GDHC_DymolaModel.DES.PartialTwoPortInterface_JVR(
     final m_flow(start=0),
-    final allowFlowReversal = true,
+    final allowFlowReversal=true,
     final dp(start=0));
 
   parameter Boolean connected = true;

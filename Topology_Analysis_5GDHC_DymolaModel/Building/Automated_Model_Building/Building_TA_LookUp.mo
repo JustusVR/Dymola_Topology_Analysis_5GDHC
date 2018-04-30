@@ -1,4 +1,4 @@
-within Topology_Analysis_5GDHC.Building.Automated_Model_Building;
+within Topology_Analysis_5GDHC_DymolaModel.Building.Automated_Model_Building;
 model Building_TA_LookUp
 
   replaceable package Medium =
@@ -9,10 +9,10 @@ parameter Modelica.SIunits.HeatFlowRate Q_nominal_cool = 19489;
 parameter Modelica.SIunits.TemperatureDifference dT_nominal= 6;
 parameter Modelica.SIunits.MassFlowRate m_flow_nominal = Q_nominal_cool/(cp_nominal*dT_nominal);
 parameter Modelica.SIunits.HeatCapacity cp_nominal = 4187;
-parameter String Heating_DQ_File = "/home/justus/Documents/Topology_Analysis_5GDHC/Resources/Loads/LookUp_Table/heating_ambient.mos";
-parameter String Cooling_DQ_File = "/home/justus/Documents/Topology_Analysis_5GDHC/Resources/Loads/LookUp_Table/cooling_ambient.mos";
-parameter String Heating_HP_ele_File = "/home/justus/Documents/Topology_Analysis_5GDHC/Resources/Loads/LookUp_Table/heating_system.mos";
-parameter String Cooling_HP_ele_File = "/home/justus/Documents/Topology_Analysis_5GDHC/Resources/Loads/LookUp_Table/cooling_system.mos";
+parameter String Heating_DQ_File = Modelica.Utilities.Files.loadResource("modelica://Topology_Analysis_5GDHC_DymolaModel/Resources/Loads/LookUp_Table/heating_ambient.mos");
+parameter String Cooling_DQ_File = Modelica.Utilities.Files.loadResource("modelica://Topology_Analysis_5GDHC_DymolaModel/Resources/Loads/LookUp_Table/cooling_ambient.mos");
+parameter String Heating_HP_ele_File = Modelica.Utilities.Files.loadResource("modelica://Topology_Analysis_5GDHC_DymolaModel/Resources/Loads/LookUp_Table/heating_system.mos");
+parameter String Cooling_HP_ele_File = Modelica.Utilities.Files.loadResource("modelica://Topology_Analysis_5GDHC_DymolaModel/Resources/Loads/LookUp_Table/cooling_system.mos");
 parameter Boolean connected = true;
 
 public

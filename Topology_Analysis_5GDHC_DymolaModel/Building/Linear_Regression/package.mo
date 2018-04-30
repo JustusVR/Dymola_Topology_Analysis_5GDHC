@@ -1,3 +1,3 @@
-within Topology_Analysis_5GDHC.Building;
+within Topology_Analysis_5GDHC_DymolaModel.Building;
 package Linear_Regression
 end Linear_Regression;

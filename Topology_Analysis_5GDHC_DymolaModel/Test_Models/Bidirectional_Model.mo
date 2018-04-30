@@ -1,4 +1,4 @@
-within Topology_Analysis_5GDHC.Test_Models;
+within Topology_Analysis_5GDHC_DymolaModel.Test_Models;
 model Bidirectional_Model
 
 replaceable package Medium =

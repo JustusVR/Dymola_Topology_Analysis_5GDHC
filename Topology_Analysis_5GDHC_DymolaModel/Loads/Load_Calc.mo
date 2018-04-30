@@ -1,4 +1,4 @@
-within Topology_Analysis_5GDHC.Loads;
+within Topology_Analysis_5GDHC_DymolaModel.Loads;
 model Load_Calc
 
   parameter String DQ_FileName;

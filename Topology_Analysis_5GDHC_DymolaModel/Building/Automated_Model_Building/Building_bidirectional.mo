@@ -1,4 +1,4 @@
-within Topology_Analysis_5GDHC.Building.Automated_Model_Building;
+within Topology_Analysis_5GDHC_DymolaModel.Building.Automated_Model_Building;
 model Building_bidirectional
 
   replaceable package Medium =

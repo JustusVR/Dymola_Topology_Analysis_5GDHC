@@ -1,6 +1,6 @@
-within Topology_Analysis_5GDHC.DES.Ideal_Source;
+within Topology_Analysis_5GDHC_DymolaModel.DES.Ideal_Source;
 model Heater_Chiller_Control
-  import LinReg_District_Heating_Cooling = Topology_Analysis_5GDHC;
+  import LinReg_District_Heating_Cooling = Topology_Analysis_5GDHC_DymolaModel;
 
   Modelica.Fluid.Interfaces.FluidPort_a port_a(
     redeclare final package Medium = Medium,

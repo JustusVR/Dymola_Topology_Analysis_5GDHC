@@ -1,4 +1,4 @@
-within Topology_Analysis_5GDHC.Automated_5GDHC;
+within Topology_Analysis_5GDHC_DymolaModel.Automated_5GDHC;
 model Test
 
   extends Modelica.Icons.Example;
@@ -62,10 +62,12 @@ protected
       annotation (Placement(transformation(extent={{-3,-3},{3,3}},rotation = 0, origin = {75,-107})));
 
 public
-  Topology_Analysis_5GDHC.DES.Ideal_T_JVR NewDistrictSystem(
-      redeclare package Medium = Medium,
-      m_flow_nominal=1)
-      annotation (Placement(transformation(extent={{-20,-20},{20,20}},rotation = 0, origin = {70,-210})));
+  Topology_Analysis_5GDHC_DymolaModel.DES.Ideal_T_JVR NewDistrictSystem(
+      redeclare package Medium = Medium, m_flow_nominal=1) annotation (
+      Placement(transformation(
+        extent={{-20,-20},{20,20}},
+        rotation=0,
+        origin={70,-210})));
 protected
   Buildings.Fluid.Delays.DelayFirstOrder NewDistrictSystem_node_a(
       nPorts=4,
@@ -78,44 +80,54 @@ protected
       m_flow_nominal=1)
       annotation (Placement(transformation(extent={{-3,-3},{3,3}},rotation = 0, origin = {75,-247})));
 
-
 public
-  Topology_Analysis_5GDHC.Dual_Pipe.Dual_Pipe_HeatLoss Pipe_MediumOffice_Retail(
-      redeclare package Medium = Medium,
-      length=99,
-      m_flow_nominal=1)
-      annotation (Placement(transformation(extent={{-5,-5},{5,5}},rotation = 0, origin = {120,300})));
+  Topology_Analysis_5GDHC_DymolaModel.Dual_Pipe.Dual_Pipe_HeatLoss Pipe_MediumOffice_Retail(
+    redeclare package Medium = Medium,
+    length=99,
+    m_flow_nominal=1) annotation (Placement(transformation(
+        extent={{-5,-5},{5,5}},
+        rotation=0,
+        origin={120,300})));
 
-  Topology_Analysis_5GDHC.Dual_Pipe.Dual_Pipe_HeatLoss Pipe_MediumOffice_MultiFamily(
-      redeclare package Medium = Medium,
-      length=59,
-      m_flow_nominal=1)
-      annotation (Placement(transformation(extent={{-5,-5},{5,5}},rotation = 0, origin = {120,350})));
+  Topology_Analysis_5GDHC_DymolaModel.Dual_Pipe.Dual_Pipe_HeatLoss Pipe_MediumOffice_MultiFamily(
+    redeclare package Medium = Medium,
+    length=59,
+    m_flow_nominal=1) annotation (Placement(transformation(
+        extent={{-5,-5},{5,5}},
+        rotation=0,
+        origin={120,350})));
 
-  Topology_Analysis_5GDHC.Dual_Pipe.Dual_Pipe_HeatLoss Pipe_MediumOffice_NewDistrictSystem(
-      redeclare package Medium = Medium,
-      length=143,
-      m_flow_nominal=1)
-      annotation (Placement(transformation(extent={{-5,-5},{5,5}},rotation = 0, origin = {120,400})));
+  Topology_Analysis_5GDHC_DymolaModel.Dual_Pipe.Dual_Pipe_HeatLoss Pipe_MediumOffice_NewDistrictSystem(
+    redeclare package Medium = Medium,
+    length=143,
+    m_flow_nominal=1) annotation (Placement(transformation(
+        extent={{-5,-5},{5,5}},
+        rotation=0,
+        origin={120,400})));
 
-  Topology_Analysis_5GDHC.Dual_Pipe.Dual_Pipe_HeatLoss Pipe_Retail_MultiFamily(
-      redeclare package Medium = Medium,
-      length=45,
-      m_flow_nominal=1)
-      annotation (Placement(transformation(extent={{-5,-5},{5,5}},rotation = 0, origin = {120,160})));
+  Topology_Analysis_5GDHC_DymolaModel.Dual_Pipe.Dual_Pipe_HeatLoss Pipe_Retail_MultiFamily(
+    redeclare package Medium = Medium,
+    length=45,
+    m_flow_nominal=1) annotation (Placement(transformation(
+        extent={{-5,-5},{5,5}},
+        rotation=0,
+        origin={120,160})));
 
-  Topology_Analysis_5GDHC.Dual_Pipe.Dual_Pipe_HeatLoss Pipe_Retail_NewDistrictSystem(
-      redeclare package Medium = Medium,
-      length=46,
-      m_flow_nominal=1)
-      annotation (Placement(transformation(extent={{-5,-5},{5,5}},rotation = 0, origin = {120,260})));
+  Topology_Analysis_5GDHC_DymolaModel.Dual_Pipe.Dual_Pipe_HeatLoss Pipe_Retail_NewDistrictSystem(
+    redeclare package Medium = Medium,
+    length=46,
+    m_flow_nominal=1) annotation (Placement(transformation(
+        extent={{-5,-5},{5,5}},
+        rotation=0,
+        origin={120,260})));
 
-  Topology_Analysis_5GDHC.Dual_Pipe.Dual_Pipe_HeatLoss Pipe_MultiFamily_NewDistrictSystem(
-      redeclare package Medium = Medium,
-      length=85,
-      m_flow_nominal=1)
-      annotation (Placement(transformation(extent={{-5,-5},{5,5}},rotation = 0, origin = {120,-70})));
-
+  Topology_Analysis_5GDHC_DymolaModel.Dual_Pipe.Dual_Pipe_HeatLoss Pipe_MultiFamily_NewDistrictSystem(
+    redeclare package Medium = Medium,
+    length=85,
+    m_flow_nominal=1) annotation (Placement(transformation(
+        extent={{-5,-5},{5,5}},
+        rotation=0,
+        origin={120,-70})));
 
 public
   Modelica.Blocks.Continuous.Integrator Buildings_PumpingElectricity_Energy(
@@ -293,7 +305,6 @@ protected
   Modelica.Blocks.Sources.RealExpression HeatLoss_Pipe_MultiFamily_NewDistrictSystem(
       y = Pipe_MultiFamily_NewDistrictSystem.heatLoss)
       annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation = 0, origin = {530,-400})));
-
 
 equation
   connect(MediumOffice.port_a, MediumOffice_node_a.ports[1])

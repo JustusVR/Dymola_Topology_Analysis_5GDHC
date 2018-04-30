@@ -1,3 +1,0 @@
-within Topology_Analysis_5GDHC.Heat_Exchanger.Loads;
-package Linear_Regression
-end Linear_Regression;

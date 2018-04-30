@@ -1,4 +1,4 @@
-within Topology_Analysis_5GDHC.Automated_5GDHC;
+within Topology_Analysis_5GDHC_DymolaModel.Automated_5GDHC;
 model Demo
 
   extends Modelica.Icons.Example;
@@ -6,7 +6,6 @@ model Demo
   replaceable package Medium = Buildings.Media.Water;
 
   parameter Modelica.SIunits.MassFlowRate m_flow_nominal = 1;
-
 
   Dual_Pipe.Dual_Pipe dual_Pipe(
     redeclare package Medium = Medium,
@@ -24,7 +23,7 @@ model Demo
         origin={-30,110})));
 
   Building.Automated_Model_Building.RFBuilding_individual building1(redeclare
-      package                                                                         Medium = Medium)
+      package Medium =                                                                         Medium)
     annotation (Placement(transformation(extent={{-20,-20},{20,20}},rotation=0,origin={-100,100})));
   Buildings.Fluid.Delays.DelayFirstOrder del1_hot(
     nPorts=3,
@@ -42,11 +41,8 @@ model Demo
         rotation=0,
         origin={-95,63})));
 
-
-
-
   DES.Ideal_Source.Heater_Chiller_automate heater_Chiller_automate(redeclare
-      package                                                                        Medium = Medium)
+      package Medium =                                                                        Medium)
     annotation (Placement(transformation(extent={{-20,-20},{20,20}},rotation=0,origin={100,100})));
   Buildings.Fluid.Delays.DelayFirstOrder del_pla_hot(
     nPorts=2,
@@ -63,10 +59,8 @@ model Demo
         rotation=0,
         origin={105,63})));
 
-
-
   Building.Automated_Model_Building.RFBuilding_individual building2(redeclare
-      package                                                                         Medium = Medium)
+      package Medium =                                                                         Medium)
     annotation (Placement(transformation(extent={{-20,-20},{20,20}},rotation=0,origin={-100,-100})));
   Buildings.Fluid.Delays.DelayFirstOrder del2_hot(
     nPorts=2,

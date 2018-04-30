@@ -1,4 +1,4 @@
-within Topology_Analysis_5GDHC.DES.Ideal_Source.Valve_Control;
+within Topology_Analysis_5GDHC_DymolaModel.DES.Ideal_Source.Valve_Control;
 model ValveControl2
   Modelica.Blocks.Interfaces.RealInput u
     annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));

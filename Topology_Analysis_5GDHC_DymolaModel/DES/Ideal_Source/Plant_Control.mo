@@ -1,6 +1,6 @@
-within Topology_Analysis_5GDHC.DES.Ideal_Source;
+within Topology_Analysis_5GDHC_DymolaModel.DES.Ideal_Source;
 model Plant_Control
-  import LinReg_District_Heating_Cooling = Topology_Analysis_5GDHC;
+  import LinReg_District_Heating_Cooling = Topology_Analysis_5GDHC_DymolaModel;
 
     replaceable package Medium =
       Modelica.Media.Interfaces.PartialMedium "Medium model for water";

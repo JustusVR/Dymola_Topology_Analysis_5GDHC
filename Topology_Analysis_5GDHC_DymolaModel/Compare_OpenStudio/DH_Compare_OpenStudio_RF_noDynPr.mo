@@ -1,4 +1,4 @@
-within Topology_Analysis_5GDHC.Compare_OpenStudio;
+within Topology_Analysis_5GDHC_DymolaModel.Compare_OpenStudio;
 model DH_Compare_OpenStudio_RF_noDynPr
 
 replaceable package Medium =
@@ -95,8 +95,8 @@ public
         rotation=-90,
         origin={380,-40})));
 public
-  DES.Ideal_Source.Heater_Chiller_noDyn HeaterChiller(redeclare package Medium =
-        Medium) "Model to set the reference pressure" annotation (Placement(
+  DES.Ideal_Source.Heater_Chiller_noDyn HeaterChiller(redeclare package Medium
+      = Medium) "Model to set the reference pressure" annotation (Placement(
         transformation(
         extent={{-23,-21},{23,21}},
         origin={-533,3},

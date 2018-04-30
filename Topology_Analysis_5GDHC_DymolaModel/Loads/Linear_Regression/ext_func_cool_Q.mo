@@ -1,4 +1,4 @@
-within Topology_Analysis_5GDHC.Loads.Linear_Regression;
+within Topology_Analysis_5GDHC_DymolaModel.Loads.Linear_Regression;
 function ext_func_cool_Q
   input Real n[8];
   output Real result;

@@ -1,4 +1,4 @@
-within Topology_Analysis_5GDHC.DES;
+within Topology_Analysis_5GDHC_DymolaModel.DES;
 partial model PartialTwoPort_JVR "Partial component with two ports"
 
   replaceable package Medium =

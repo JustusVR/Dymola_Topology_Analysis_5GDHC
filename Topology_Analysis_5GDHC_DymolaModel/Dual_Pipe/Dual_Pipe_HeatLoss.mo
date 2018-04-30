@@ -1,4 +1,4 @@
-within Topology_Analysis_5GDHC.Dual_Pipe;
+within Topology_Analysis_5GDHC_DymolaModel.Dual_Pipe;
 model Dual_Pipe_HeatLoss
 
   replaceable package Medium =
@@ -28,19 +28,20 @@ model Dual_Pipe_HeatLoss
     diameter=diameter)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,origin={0,-60})));
 
-  Modelica.Fluid.Interfaces.FluidPort_a port_a_hot(redeclare final package Medium =
-               Medium, h_outflow(start=Medium.h_default)) "Fluid connector a"
+  Modelica.Fluid.Interfaces.FluidPort_a port_a_hot(redeclare final package
+      Medium = Medium, h_outflow(start=Medium.h_default)) "Fluid connector a"
     annotation (Placement(transformation(extent={{-102,50},{-82,70}}),
         iconTransformation(extent={{-122,30},{-82,70}})));
-  Modelica.Fluid.Interfaces.FluidPort_b port_b_hot(redeclare final package Medium =
-               Medium, h_outflow(start=Medium.h_default)) "Fluid connector b"
+  Modelica.Fluid.Interfaces.FluidPort_b port_b_hot(redeclare final package
+      Medium = Medium, h_outflow(start=Medium.h_default)) "Fluid connector b"
     annotation (Placement(transformation(extent={{108,50},{88,70}}),
         iconTransformation(extent={{118,30},{78,70}})));
-  Modelica.Fluid.Interfaces.FluidPort_a port_a_cold(redeclare final package Medium =
-               Medium, h_outflow(start=Medium.h_default)) "Fluid connector a"
+  Modelica.Fluid.Interfaces.FluidPort_a port_a_cold(redeclare final package
+      Medium = Medium, h_outflow(start=Medium.h_default)) "Fluid connector a"
     annotation (Placement(transformation(extent={{-110,-70},{-90,-50}}),
         iconTransformation(extent={{-120,-80},{-80,-40}})));
-  Modelica.Fluid.Interfaces.FluidPort_b port_b_cold(redeclare final package Medium = Medium, h_outflow(start=Medium.h_default))
+  Modelica.Fluid.Interfaces.FluidPort_b port_b_cold(redeclare final package
+      Medium =                                                                       Medium, h_outflow(start=Medium.h_default))
     "Fluid connector b"
     annotation (Placement(transformation(extent={{110,-70},{90,-50}}), iconTransformation(extent={{118,-80},{78,-40}})));
   Modelica.Fluid.Valves.ValveDiscrete valve_a(

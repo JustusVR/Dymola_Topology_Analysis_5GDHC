@@ -1,3 +1,3 @@
-within Topology_Analysis_5GDHC;
+within Topology_Analysis_5GDHC_DymolaModel;
 package Automated_5GDHC
 end Automated_5GDHC;

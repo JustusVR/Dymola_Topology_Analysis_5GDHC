@@ -1,4 +1,4 @@
-within Topology_Analysis_5GDHC.Building.Automated_Model_Building;
+within Topology_Analysis_5GDHC_DymolaModel.Building.Automated_Model_Building;
 model control_test
   Modelica.Blocks.Interfaces.RealOutput individual annotation (Placement(transformation(extent={{100,50},{120,70}})));
   Modelica.Blocks.Interfaces.RealOutput connected annotation (Placement(transformation(extent={{100,-70},{120,-50}})));

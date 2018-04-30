@@ -1,6 +1,6 @@
-within Topology_Analysis_5GDHC.Heat_Exchanger;
+within Topology_Analysis_5GDHC_DymolaModel.Heat_Exchanger;
 model HX_LinRegHeat
-  import Topology_Analysis_5GDHC;
+  import Topology_Analysis_5GDHC = Topology_Analysis_5GDHC_DymolaModel;
 
   Buildings.Fluid.HeatExchangers.HeaterCooler_u
                                       hea(

@@ -1,4 +1,4 @@
-within Topology_Analysis_5GDHC.DES.Ideal_Source;
+within Topology_Analysis_5GDHC_DymolaModel.DES.Ideal_Source;
 model Heater_Chiller_dyn
 
   replaceable package Medium =
@@ -30,7 +30,7 @@ model Heater_Chiller_dyn
     m_flow_nominal=m_flow_nominal,
     dpValve_nominal=6000)
     annotation (Placement(transformation(extent={{-50,-10},{-70,10}})));
-  Topology_Analysis_5GDHC.DES.Ideal_Source.Valve_Control.ValveControl
+  Topology_Analysis_5GDHC_DymolaModel.DES.Ideal_Source.Valve_Control.ValveControl
     valveControl annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,

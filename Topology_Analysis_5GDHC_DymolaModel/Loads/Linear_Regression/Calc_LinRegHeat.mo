@@ -1,4 +1,4 @@
-within Topology_Analysis_5GDHC.Loads.Linear_Regression;
+within Topology_Analysis_5GDHC_DymolaModel.Loads.Linear_Regression;
 model Calc_LinRegHeat
 
   Modelica.Blocks.Math.IntegerToReal dayInt
@@ -40,11 +40,14 @@ model Calc_LinRegHeat
     annotation (Placement(transformation(extent={{-54,54},{-44,64}})));
 equation
 
-  power.u = Topology_Analysis_5GDHC.Loads.Linear_Regression.ext_func_heat_Q({1,
-    dayIntCorrected.y,hourInt.y,monthInt.y,mFlow,tInletC.y,humOut,tOutsideC.y});
-  heatEleHP = Topology_Analysis_5GDHC.Loads.Linear_Regression.ext_func_heat_P({
-    1,dayIntCorrected.y,hourInt.y,monthInt.y,mFlow,tInletC.y,humOut,tOutsideC.y});
-  heatTOutlet = Topology_Analysis_5GDHC.Loads.Linear_Regression.ext_func_heat_T(
+  power.u =
+    Topology_Analysis_5GDHC_DymolaModel.Loads.Linear_Regression.ext_func_heat_Q(
+    {1,dayIntCorrected.y,hourInt.y,monthInt.y,mFlow,tInletC.y,humOut,tOutsideC.y});
+  heatEleHP =
+    Topology_Analysis_5GDHC_DymolaModel.Loads.Linear_Regression.ext_func_heat_P(
+    {1,dayIntCorrected.y,hourInt.y,monthInt.y,mFlow,tInletC.y,humOut,tOutsideC.y});
+  heatTOutlet =
+    Topology_Analysis_5GDHC_DymolaModel.Loads.Linear_Regression.ext_func_heat_T(
     {1,dayIntCorrected.y,hourInt.y,monthInt.y,mFlow,tInletC.y,humOut,tOutsideC.y});
 
   connect(hour, hourInt.u)

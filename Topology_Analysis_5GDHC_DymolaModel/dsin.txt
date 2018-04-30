@@ -9,7 +9,7 @@ Modelica experiment file
 double experiment(7,1)
        0                   # StartTime    Time at which integration starts
                            #              (and linearization and trimming time)
-  2.5920000000000000E+05   # StopTime     Time at which integration stops
+       1                   # StopTime     Time at which integration stops
        0                   # Increment    Communication step size, if > 0
      500                   # nInterval    Number of communication intervals, if > 0
   1.0000000000000000E-04   # Tolerance    Relative precision of signals for
@@ -102,7 +102,7 @@ int settings(13,1)
 
 
 #    Names of initial variables
-char initialName(2726,81)
+char initialName(2724,81)
 system.p_ambient
 system.T_ambient
 system.g
@@ -1630,7 +1630,6 @@ Office2.coolingLoad.add.u2
 Office2.coolingLoad.add.k1
 Office2.coolingLoad.add.k2
 Office2.coolingLoad.abs.generateEvent
-Office2.coolingLoad.modTim.y
 Office2.heatingLoad.LookUp_DQ_Load.nout
 Office2.heatingLoad.LookUp_DQ_Load.y[1]
 Office2.heatingLoad.LookUp_DQ_Load.tableOnFile
@@ -1684,7 +1683,6 @@ Office2.heatingLoad.add.u2
 Office2.heatingLoad.add.k1
 Office2.heatingLoad.add.k2
 Office2.heatingLoad.abs.generateEvent
-Office2.heatingLoad.modTim.y
 Office2.Sum_ExpElePumps.k1
 Office2.Sum_ExpElePumps.k2
 Office2.elePumps
@@ -2830,7 +2828,7 @@ Office2_node_b.dynBal.rho_default
 Office2_node_b.dynBal.hStart
 Office2_node_b.dynBal.mWat_flow_internal
 
-double initialValue(2726,6)
+double initialValue(2724,6)
  -1  1.0132500000000000E+05       0                 1.0000000000000000E+100
   1   280   # system.p_ambient
  -1  2.9314999999999998E+02       0                 1.0000000000000000E+100
@@ -5885,8 +5883,6 @@ double initialValue(2726,6)
   1  1304   # Office2.coolingLoad.add.k2
   0       0                       0                       0                
   6  1281   # Office2.coolingLoad.abs.generateEvent
-  0       0                       0                       0                
-  6   256   # Office2.coolingLoad.modTim.y
   0       1                       1                 1.0000000000000000E+100
   6  1282   # Office2.heatingLoad.LookUp_DQ_Load.nout
   0       0                       0                       0                
@@ -5993,8 +5989,6 @@ double initialValue(2726,6)
   1  1304   # Office2.heatingLoad.add.k2
   0       0                       0                       0                
   6  1281   # Office2.heatingLoad.abs.generateEvent
-  0       0                       0                       0                
-  6   256   # Office2.heatingLoad.modTim.y
  -1       1                       0                       0                
   1  1304   # Office2.Sum_ExpElePumps.k1
  -1       1                       0                       0                
@@ -8333,7 +8327,7 @@ double initialValue(2726,6)
 #   nominal value (and maybe minimum and maximum values given in 
 #   column 3 and 4). If these values are zero, scale(i)=1 is used).
 #
-char initialDescription(2726,184)
+char initialDescription(2724,184)
 Default ambient pressure [Pa|bar]
 Default ambient temperature [K|degC]
 Constant gravity acceleration [m/s2]
@@ -9861,7 +9855,6 @@ Connector of Real input signal 2
 Gain of upper input
 Gain of lower input
 Choose whether events shall be generated [:#(type=Boolean)]
-Connector of Real output signal
 Number of outputs [:#(type=Integer)]
 Connector of Real output signals
 = true, if table is defined on file or in function usertab [:#(type=Boolean)]
@@ -9915,7 +9908,6 @@ Connector of Real input signal 2
 Gain of upper input
 Gain of lower input
 Choose whether events shall be generated [:#(type=Boolean)]
-Connector of Real output signal
 Gain of upper input
 Gain of lower input
 Electrical power consumed by circulation pumps

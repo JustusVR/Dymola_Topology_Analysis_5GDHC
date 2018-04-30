@@ -1,4 +1,4 @@
-within Topology_Analysis_5GDHC.Building.Linear_Regression;
+within Topology_Analysis_5GDHC_DymolaModel.Building.Linear_Regression;
 model LinRegBuilding_unidirectional
 
   Modelica.Fluid.Interfaces.FluidPort_a port_a(
@@ -23,8 +23,8 @@ model LinRegBuilding_unidirectional
                                      weaBus annotation (Placement(
         transformation(extent={{-20,260},{20,300}}), iconTransformation(extent=
             {{-10,224},{10,244}})));
-  Topology_Analysis_5GDHC.Heat_Exchanger.HX_LinRegHeat linRegHeat_HX(redeclare
-      package Medium = Medium)
+  Topology_Analysis_5GDHC_DymolaModel.Heat_Exchanger.HX_LinRegHeat linRegHeat_HX(
+      redeclare package Medium = Medium)
     annotation (Placement(transformation(extent={{-30,140},{26,192}})));
 protected
   Buildings.Fluid.Delays.DelayFirstOrder del(
@@ -52,8 +52,8 @@ protected
     m_flow_nominal=1)
     annotation (Placement(transformation(extent={{230,18},{250,38}})));
 public
-  Topology_Analysis_5GDHC.Heat_Exchanger.HX_LinRegCool linRegCool_HX(redeclare
-      package Medium = Medium)
+  Topology_Analysis_5GDHC_DymolaModel.Heat_Exchanger.HX_LinRegCool linRegCool_HX(
+      redeclare package Medium = Medium)
     annotation (Placement(transformation(extent={{32,-200},{-24,-148}})));
   Buildings.Fluid.Movers.FlowControlled_m_flow pump1(
     redeclare package Medium = Medium,
