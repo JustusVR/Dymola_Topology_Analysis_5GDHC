@@ -1,0 +1,26 @@
+within Topology_Analysis_5GDHC;
+model tester
+    replaceable package Medium =
+      Modelica.Media.Interfaces.PartialMedium "Medium model for water";
+
+  Modelica.Blocks.Sources.Constant const1(k=293.15)
+    annotation (Placement(transformation(extent={{-90,-30},{-70,-10}})));
+public
+  Buildings.Fluid.Sources.FixedBoundary sin(redeclare package Medium = Medium,
+      nPorts=1) annotation (Placement(transformation(extent={{10,-10},{-10,10}},
+          origin={42,4})));
+public
+  Buildings.Fluid.Sources.MassFlowSource_T sou1(
+    redeclare package Medium = Medium,
+    use_T_in=true,
+    nPorts=1,
+    use_m_flow_in=false,
+    m_flow=1)      "Mass flow source"
+    annotation (Placement(transformation(extent={{-46,-6},{-26,14}})));
+equation
+  connect(sou1.ports[1], sin.ports[1])
+    annotation (Line(points={{-26,4},{32,4}}, color={0,127,255}));
+  connect(const1.y, sou1.T_in) annotation (Line(points={{-69,-20},{-58,-20},{
+          -58,8},{-48,8}}, color={0,0,127}));
+  annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(coordinateSystem(preserveAspectRatio=false)));
+end tester;

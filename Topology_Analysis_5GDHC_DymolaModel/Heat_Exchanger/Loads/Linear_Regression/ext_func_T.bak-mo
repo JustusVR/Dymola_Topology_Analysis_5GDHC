@@ -1,0 +1,9 @@
+within Topology_Analysis_5GDHC.Heat_Exchanger.Loads.Linear_Regression;
+function ext_func_T
+
+  input Real n[8];
+  output Real result;
+  external "C" result = heatTempCalc(n);
+  annotation(Include = "#include \"LR_heat_tout.c\"");
+
+end ext_func_T;

@@ -1,0 +1,266 @@
+within Topology_Analysis_5GDHC.Building.Automated_Model_Building;
+model Building_bidirectional_YY
+
+  replaceable package Medium =
+      Modelica.Media.Interfaces.PartialMedium "Medium model for water";
+
+parameter Modelica.SIunits.HeatFlowRate Q_nominal_heat = 12240;
+parameter Modelica.SIunits.HeatFlowRate Q_nominal_cool = 19489;
+parameter Modelica.SIunits.TemperatureDifference dT_nominal= 6;
+parameter Modelica.SIunits.MassFlowRate m_flow_nominal = Q_nominal_cool/(cp_nominal*dT_nominal);
+parameter Modelica.SIunits.HeatCapacity cp_nominal = 4187;
+parameter String heatingLoad_FileName = "/home/justus/Documents/Topology_Analysis_5GDHC/Resources/Loads/LookUp_Table/heating_ambient.mos";
+parameter String coolingLoad_FileName = "/home/justus/Documents/Topology_Analysis_5GDHC/Resources/Loads/LookUp_Table/cooling_ambient.mos";
+parameter Boolean connected = true;
+
+public
+  Modelica.Fluid.Interfaces.FluidPort_a port_a(
+    redeclare final package Medium = Medium,
+    h_outflow(start=Medium.h_default)) "Fluid connector a"
+    annotation (Placement(transformation(extent={{-10,10},{10,-10}},rotation=0,origin={-80,-300})));
+  Modelica.Fluid.Interfaces.FluidPort_b port_b(
+    redeclare final package Medium = Medium,
+    h_outflow(start=Medium.h_default)) "Fluid connector b"
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0, origin={80,-300})));
+
+public
+  Buildings.Fluid.Movers.FlowControlled_m_flow pump_heat(
+    redeclare package Medium = Medium,
+    addPowerToMedium=false,
+    inputType=Buildings.Fluid.Types.InputType.Continuous,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
+    use_inputFilter=true,
+    m_flow_nominal=m_flow_nominal)
+    annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},rotation=0,origin={-80,140})));
+  Buildings.Fluid.Movers.FlowControlled_m_flow pump_cool(
+    redeclare package Medium = Medium,
+    addPowerToMedium=false,
+    inputType=Buildings.Fluid.Types.InputType.Continuous,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
+    use_inputFilter=true,
+    m_flow_nominal=m_flow_nominal)
+    annotation (Placement(transformation(extent={{10,10},{-10,-10}},rotation=0,origin={80,-140})));
+
+protected
+  Modelica.Blocks.Math.Gain control_cool(k=1/(cp_nominal*dT_nominal)) "Proportional Control for circulation pump of heat exchanger"
+    annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=0,
+        origin={0,-198})));
+  Modelica.Blocks.Math.Gain control_heat(k=-1/(cp_nominal*dT_nominal))
+                                                                      "Proportional Control for circulation pump of heat exchanger"
+    annotation (Placement(transformation(
+        extent={{10,-10},{-10,10}},
+        rotation=0,
+        origin={0,200})));
+
+public
+  Modelica.Blocks.Interfaces.RealOutput elePumps "Electrical power consumed by circulation pumps"
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={20,310})));
+  Modelica.Blocks.Interfaces.RealOutput eleHP "Electrical power consumed by heat pumps"
+    annotation (Placement(
+        transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={80,310})));
+  Modelica.Blocks.Interfaces.RealOutput Qflow_heat "Space heating thermal load"
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={140,310})));
+  Modelica.Blocks.Interfaces.RealOutput Qflow_cool "Space Cooling thermal load"
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={200,310})));
+
+protected
+  Modelica.Blocks.Math.Gain propotional_Q_heat(k=1/(Q_nominal_heat))
+    annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},rotation=0,origin={-60,80})));
+  Modelica.Blocks.Math.Gain proportional_Q_cool(k=1/(Q_nominal_cool))
+    annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},rotation=0,origin={-60,-80})));
+public
+  Buildings.Fluid.HeatExchangers.HeaterCooler_u heat(
+    redeclare package Medium = Medium,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
+    m_flow_nominal=m_flow_nominal,
+    dp_nominal=30000,
+    Q_flow_nominal=Q_nominal_heat)
+    annotation (Placement(transformation(
+        extent={{-20,-20},{20,20}},
+        rotation=0,
+        origin={0,140})));
+protected
+  Buildings.Fluid.HeatExchangers.HeaterCooler_u cool(
+    m_flow_nominal=1,
+    redeclare package Medium = Medium,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
+    dp_nominal=30000,
+    Q_flow_nominal=Q_nominal_cool)
+    annotation (Placement(transformation(extent={{-20,-20},{20,20}},rotation=0,origin={0,-140})));
+
+  Modelica.Blocks.Sources.RealExpression ExpEleHP(y=1)
+    annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={80,250})));
+  Modelica.Blocks.Sources.RealExpression ExpQflow_heat(y=heatingLoad.Load)
+    annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={140,250})));
+  Modelica.Blocks.Sources.RealExpression EXPQflow_cool(y=coolingLoad.Load)
+    annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={200,250})));
+  Modelica.Blocks.Sources.RealExpression ExpElePumpsCool(y=pump_cool.P)
+    annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={40,250})));
+  Modelica.Blocks.Sources.RealExpression ExpElePumpsHeat(y=pump_heat.P)
+    annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={0,250})));
+protected
+  Modelica.Blocks.Math.Add Sum_ExpElePumps annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={20,280})));
+public
+  Modelica.Fluid.Valves.ValveDiscrete valve_a(
+    redeclare package Medium = Medium,
+    m_flow_nominal=1,
+    dp_nominal=100000,
+    opening_min=1e-6)
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,  origin={-140,-280})));
+  Modelica.Fluid.Valves.ValveDiscrete valve_b(
+    redeclare package Medium = Medium,
+    m_flow_nominal=1,
+    dp_nominal=100000,
+    opening_min=1e-6)
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,  origin={140,-280})));
+  Modelica.Blocks.Sources.BooleanConstant buildingConnected( k=connected)
+    annotation (Placement(transformation(extent={{-12,-12},{12,12}},rotation=0,origin={-170,0})));
+  Loads.Load_Calc coolingLoad(Load_FileName=coolingLoad_FileName)
+    annotation (Placement(transformation(extent={{-20,-20},{20,20}},rotation=0,origin={-100,-80})));
+  Loads.Load_Calc heatingLoad(Load_FileName=heatingLoad_FileName)
+    annotation (Placement(transformation(extent={{-20,-20},{20,20}},rotation=0,origin={-100,80})));
+
+equation
+
+  connect(control_cool.y,pump_cool. m_flow_in)
+    annotation (Line(points={{11,-198},{80,-198},{80,-152}},                                        color={0,0,127}));
+
+  connect(pump_heat.port_b, heat.port_a)
+    annotation (Line(points={{-70,140},{-20,140}},                      color={0,127,255}));
+  connect(control_cool.u, cool.Q_flow) annotation (Line(points={{-12,-198},{-38,-198},{-38,-172},{40,-172},{40,-128},{22,-128}},
+                                                                                                          color={0,0,127}));
+  connect(Qflow_heat, Qflow_heat)
+    annotation (Line(points={{140,310},{140,310}}, color={0,0,127}));
+  connect(ExpEleHP.y, eleHP) annotation (Line(points={{80,261},{80,310}}, color={0,0,127}));
+  connect(ExpQflow_heat.y, Qflow_heat) annotation (Line(points={{140,261},{140,
+          310}},                                                                      color={0,0,127}));
+  connect(EXPQflow_cool.y, Qflow_cool) annotation (Line(points={{200,261},{200,
+          310}},                                                                                color={0,0,127}));
+  connect(eleHP, eleHP)
+    annotation (Line(points={{80,310},{80,310}}, color={0,0,127}));
+  connect(control_heat.u, heat.Q_flow) annotation (Line(points={{12,200},{40,200},{40,152},{22,152}},
+                                                                                                    color={0,0,127}));
+  connect(control_heat.y, pump_heat.m_flow_in) annotation (Line(points={{-11,200},{-80,200},{-80,152}}, color={0,0,127}));
+  connect(ExpElePumpsHeat.y, Sum_ExpElePumps.u1) annotation (Line(points={{
+          8.88178e-16,261},{8,261},{14,261},{14,262},{14,268},{14,268}}, color=
+          {0,0,127}));
+  connect(ExpElePumpsCool.y, Sum_ExpElePumps.u2)
+    annotation (Line(points={{40,261},{26,261},{26,268}}, color={0,0,127}));
+  connect(Sum_ExpElePumps.y, elePumps)
+    annotation (Line(points={{20,291},{20,310}}, color={0,0,127}));
+  connect(port_a, valve_a.port_b)
+    annotation (Line(points={{-80,-300},{-80,-280},{-130,-280}},
+                                                      color={0,127,255}));
+  connect(buildingConnected.y, valve_a.open) annotation (Line(points={{-156.8,0},{-140,0},{-140,-272}},   color={255,0,255}));
+  connect(cool.u, proportional_Q_cool.y) annotation (Line(points={{-24,-128},{-40,-128},{-40,-80},{-49,-80}},
+                                          color={0,0,127}));
+  connect(proportional_Q_cool.u, coolingLoad.DH_Load) annotation (Line(points={{-72,-80},{-76,-80},{-76,-88},{-78,-88}},
+                                                         color={0,0,127}));
+  connect(buildingConnected.y, coolingLoad.u)
+    annotation (Line(points={{-156.8,0},{-140,0},{-140,-80},{-124,-80}},       color={255,0,255}));
+  connect(buildingConnected.y, heatingLoad.u)
+    annotation (Line(points={{-156.8,0},{-140,0},{-140,80},{-124,80}},   color={255,0,255}));
+  connect(heatingLoad.DH_Load, propotional_Q_heat.u) annotation (Line(points={{-78,72},{-76,72},{-76,80},{-72,80}},
+                                                   color={0,0,127}));
+  connect(propotional_Q_heat.y, heat.u) annotation (Line(points={{-49,80},{-42,80},{-42,152},{-24,152}},
+                                color={0,0,127}));
+  connect(port_b, valve_b.port_a)
+    annotation (Line(points={{80,-300},{80,-280},{130,-280}},
+                                                    color={0,127,255}));
+  connect(buildingConnected.y, valve_b.open)
+    annotation (Line(points={{-156.8,0},{-140,0},{-140,-242},{140,-242},{140,-272}},   color={255,0,255}));
+  connect(cool.port_b, pump_cool.port_b) annotation (Line(points={{20,-140},{70,-140}}, color={0,127,255}));
+  connect(pump_heat.port_a, valve_a.port_a) annotation (Line(points={{-90,140},
+          {-222,140},{-222,-280},{-150,-280}}, color={0,127,255}));
+  connect(cool.port_a, valve_a.port_a) annotation (Line(points={{-20,-140},{
+          -222,-140},{-222,-280},{-150,-280}}, color={0,127,255}));
+  connect(heat.port_b, valve_b.port_b) annotation (Line(points={{20,140},{220,
+          140},{220,-280},{150,-280}}, color={0,127,255}));
+  connect(pump_cool.port_a, valve_b.port_b) annotation (Line(points={{90,-140},
+          {220,-140},{220,-280},{150,-280}}, color={0,127,255}));
+  annotation (
+    Diagram(coordinateSystem(extent={{-280,-300},{280,300}})),
+    Icon(coordinateSystem(extent={{-280,-300},{280,300}}),graphics={
+      Rectangle(
+          extent={{-280,300},{280,-300}},
+          lineColor={28,108,200},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid), Rectangle(
+          extent={{-266,128},{262,-272}},
+          fillColor={135,135,135},
+          fillPattern=FillPattern.Solid,
+          pattern=LinePattern.None),
+        Rectangle(
+          extent={{58,46},{176,-52}},
+          lineColor={0,0,0},
+          fillColor={215,215,215},
+          fillPattern=FillPattern.Solid),
+      Polygon(
+        points={{0,274},{-266,128},{262,128},{0,274}},
+        lineColor={95,95,95},
+        smooth=Smooth.None,
+        fillPattern=FillPattern.Solid,
+        fillColor={95,95,95}),
+        Rectangle(
+          extent={{-188,-106},{-74,-272}},
+          lineColor={0,0,0},
+          fillColor={215,215,215},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{58,-4},{116,-52}},
+          lineColor={0,0,0},
+          fillColor={215,215,215},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{58,46},{116,-2}},
+          lineColor={0,0,0},
+          fillColor={215,215,215},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{118,46},{176,-2}},
+          lineColor={0,0,0},
+          fillColor={215,215,215},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{118,-4},{176,-52}},
+          lineColor={0,0,0},
+          fillColor={215,215,215},
+          fillPattern=FillPattern.Solid),
+        Ellipse(
+          extent={{-98,-198},{-84,-212}},
+          pattern=LinePattern.None,
+          fillColor={135,135,135},
+          fillPattern=FillPattern.Solid)}));
+end Building_bidirectional_YY;

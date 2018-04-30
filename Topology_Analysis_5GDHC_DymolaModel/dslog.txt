@@ -1,0 +1,47 @@
+Log-file of program ./dymosim
+(generated: Fri Apr 27 14:33:50 2018)
+
+dymosim started
+... "dsin.txt" loading (dymosim input file)
+Office2.pump_heat.nominalValuesDefineDefaultPressureCurve
+The following was detected at time: 0
+*** Warning: You are using a flow or pressure controlled mover with the
+             default pressure curve.
+             This leads to approximate calculations of the electrical power
+             consumption. Add the correct pressure curve in the record per
+             to obtain an accurate computation.
+             Setting nominalValuesDefineDefaultPressureCurve=true will suppress this warning.
+Office2.pump_cool.nominalValuesDefineDefaultPressureCurve
+The following was detected at time: 0
+*** Warning: You are using a flow or pressure controlled mover with the
+             default pressure curve.
+             This leads to approximate calculations of the electrical power
+             consumption. Add the correct pressure curve in the record per
+             to obtain an accurate computation.
+             Setting nominalValuesDefineDefaultPressureCurve=true will suppress this warning.
+... loading "tab1" from "/home/justus/Documents/Topology_Analysis_5GDHC/Resources/Loads/LookUp_Table/cooling_ambient.mos"
+... loading "tab1" from "/home/justus/Documents/Topology_Analysis_5GDHC/Resources/Loads/LookUp_Table/cooling_system.mos"
+... loading "tab1" from "/home/justus/Documents/Topology_Analysis_5GDHC/Resources/Loads/LookUp_Table/heating_ambient.mos"
+... loading "tab1" from "/home/justus/Documents/Topology_Analysis_5GDHC/Resources/Loads/LookUp_Table/heating_system.mos"
+... "Test_Building.mat" creating (simulation result file)
+
+Integration started at T = 0 using integration method DASSL
+(DAE multi-step solver (dassl/dasslrt of Petzold modified by Dynasim))
+Integration terminated successfully at T = 259200
+   CPU-time for integration      : 0.0217 seconds
+   CPU-time for one GRID interval: 0.0434 milli-seconds
+   Number of result points       : 502
+   Number of GRID   points       : 501
+   Number of (successful) steps  : 19
+   Number of F-evaluations       : 253
+   Number of H-evaluations       : 519
+   Number of Jacobian-evaluations: 18
+   Number of (model) time events : 0
+   Number of (U) time events     : 0
+   Number of state    events     : 0
+   Number of step     events     : 0
+   Minimum integration stepsize  : 0.518
+   Maximum integration stepsize  : 1.23e+05
+   Maximum integration order     : 1
+Calling terminal section
+... "dsfinal.txt" creating (final states)

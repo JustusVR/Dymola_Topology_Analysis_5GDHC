@@ -1,0 +1,284 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -105.21867419019776,
+              39.756672239377764
+            ],
+            [
+              -105.21844726102714,
+              39.756446214383345
+            ],
+            [
+              -105.21875938596257,
+              39.75626100843925
+            ],
+            [
+              -105.21898631513321,
+              39.75648703404144
+            ],
+            [
+              -105.21867419019776,
+              39.756672239377764
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "5ab94ebafa880979602344ca",
+        "type": "Building",
+        "geometryType": "Rectangle",
+        "name": "Office4",
+        "footprint_area": 11544,
+        "footprint_perimeter": 430,
+        "project_id": "5ab94dd1fa880979602344bc",
+        "updated_at": "2018-03-26T19:49:14.124Z",
+        "created_at": "2018-03-26T19:49:14.124Z",
+        "rotation": -1.210648029977938,
+        "building_type": "Office",
+        "floor_area": 11544,
+        "number_of_stories": 1,
+        "height": 3
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -105.21680660384133,
+              39.75540723072575
+            ],
+            [
+              -105.21660670934855,
+              39.755205457981845
+            ],
+            [
+              -105.21700359626544,
+              39.75497307004474
+            ],
+            [
+              -105.21720349075822,
+              39.75517484346943
+            ],
+            [
+              -105.21680660384133,
+              39.75540723072575
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "5ab94ebbfa880979602344cd",
+        "type": "Building",
+        "geometryType": "Rectangle",
+        "name": "Office5",
+        "footprint_area": 12975,
+        "footprint_perimeter": 465,
+        "project_id": "5ab94dd1fa880979602344bc",
+        "updated_at": "2018-03-26T19:49:15.911Z",
+        "created_at": "2018-03-26T19:49:15.911Z",
+        "rotation": -0.6509004525168667,
+        "building_type": "Office",
+        "floor_area": 12975,
+        "number_of_stories": 1,
+        "height": 3
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -105.22067671245404,
+              39.756344671831386
+            ],
+            [
+              -105.22040817922029,
+              39.75602143781788
+            ],
+            [
+              -105.2209846088138,
+              39.75573841254911
+            ],
+            [
+              -105.2212531420475,
+              39.75606164789082
+            ],
+            [
+              -105.22067671245404,
+              39.756344671831386
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "5ab94e88fa880979602344c1",
+        "type": "Building",
+        "geometryType": "Rectangle",
+        "name": "Office1",
+        "footprint_area": 26899,
+        "footprint_perimeter": 664,
+        "project_id": "5ab94dd1fa880979602344bc",
+        "updated_at": "2018-03-26T19:48:24.595Z",
+        "created_at": "2018-03-26T19:48:24.595Z",
+        "rotation": -1.1518231826348684,
+        "building_type": "Office",
+        "floor_area": 29600,
+        "number_of_stories": 1,
+        "height": 3
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -105.21926552074218,
+              39.755873131491114
+            ],
+            [
+              -105.21896850622939,
+              39.75552723504623
+            ],
+            [
+              -105.21939829018928,
+              39.75530911996944
+            ],
+            [
+              -105.21969530470197,
+              39.75565501750961
+            ],
+            [
+              -105.21926552074218,
+              39.755873131491114
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "5ab94eb4fa880979602344c4",
+        "type": "Building",
+        "geometryType": "Rectangle",
+        "name": "Office2",
+        "footprint_area": 21888,
+        "footprint_perimeter": 592,
+        "project_id": "5ab94dd1fa880979602344bc",
+        "updated_at": "2018-03-26T19:49:08.385Z",
+        "created_at": "2018-03-26T19:49:08.385Z",
+        "rotation": -0.5834669107012295,
+        "building_type": "Office",
+        "floor_area": 21888,
+        "number_of_stories": 1,
+        "height": 3
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -105.21879267513977,
+              39.755427371281144
+            ],
+            [
+              -105.21850292018976,
+              39.755063266326516
+            ],
+            [
+              -105.21899026002487,
+              39.75483404979991
+            ],
+            [
+              -105.21928001497487,
+              39.75519815596624
+            ],
+            [
+              -105.21879267513977,
+              39.755427371281144
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "5ab94eb6fa880979602344c7",
+        "type": "Building",
+        "geometryType": "Rectangle",
+        "name": "Office3",
+        "footprint_area": 25007,
+        "footprint_perimeter": 633,
+        "project_id": "5ab94dd1fa880979602344bc",
+        "updated_at": "2018-03-26T19:49:10.630Z",
+        "created_at": "2018-03-26T19:49:10.630Z",
+        "rotation": -0.5490495274317392,
+        "building_type": "Office",
+        "floor_area": 25007,
+        "number_of_stories": 1,
+        "height": 3
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -105.21791802685641,
+              39.75656177847881
+            ],
+            [
+              -105.21761576943767,
+              39.75625665069069
+            ],
+            [
+              -105.21715484899336,
+              39.756526495757754
+            ],
+            [
+              -105.21745710641211,
+              39.756831622350376
+            ],
+            [
+              -105.21791802685641,
+              39.75656177847881
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "5ab9501efa880979602344d3",
+        "type": "District System",
+        "geometryType": "Rectangle",
+        "name": "New District System",
+        "footprint_area": 22785,
+        "footprint_perimeter": 605,
+        "project_id": "5ab94dd1fa880979602344bc",
+        "updated_at": "2018-03-26T19:56:29.164Z",
+        "created_at": "2018-03-26T19:55:10.182Z",
+        "rotation": -0.650844875852273,
+        "district_system_type": "Central Hot and Cold Water"
+      }
+    }
+  ],
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:4326"
+    }
+  }
+}
