@@ -1,0 +1,69 @@
+MediumOffice.pump_heat.nominalValuesDefineDefaultPressureCurve
+The following was detected at time: 0
+*** Warning: You are using a flow or pressure controlled mover with the
+             default pressure curve.
+             This leads to approximate calculations of the electrical power
+             consumption. Add the correct pressure curve in the record per
+             to obtain an accurate computation.
+             Setting nominalValuesDefineDefaultPressureCurve=true will suppress this warning.
+MediumOffice.pump_cool.nominalValuesDefineDefaultPressureCurve
+The following was detected at time: 0
+*** Warning: You are using a flow or pressure controlled mover with the
+             default pressure curve.
+             This leads to approximate calculations of the electrical power
+             consumption. Add the correct pressure curve in the record per
+             to obtain an accurate computation.
+             Setting nominalValuesDefineDefaultPressureCurve=true will suppress this warning.
+Retail.pump_heat.nominalValuesDefineDefaultPressureCurve
+The following was detected at time: 0
+*** Warning: You are using a flow or pressure controlled mover with the
+             default pressure curve.
+             This leads to approximate calculations of the electrical power
+             consumption. Add the correct pressure curve in the record per
+             to obtain an accurate computation.
+             Setting nominalValuesDefineDefaultPressureCurve=true will suppress this warning.
+Retail.pump_cool.nominalValuesDefineDefaultPressureCurve
+The following was detected at time: 0
+*** Warning: You are using a flow or pressure controlled mover with the
+             default pressure curve.
+             This leads to approximate calculations of the electrical power
+             consumption. Add the correct pressure curve in the record per
+             to obtain an accurate computation.
+             Setting nominalValuesDefineDefaultPressureCurve=true will suppress this warning.
+MultiFamily.pump_heat.nominalValuesDefineDefaultPressureCurve
+The following was detected at time: 0
+*** Warning: You are using a flow or pressure controlled mover with the
+             default pressure curve.
+             This leads to approximate calculations of the electrical power
+             consumption. Add the correct pressure curve in the record per
+             to obtain an accurate computation.
+             Setting nominalValuesDefineDefaultPressureCurve=true will suppress this warning.
+MultiFamily.pump_cool.nominalValuesDefineDefaultPressureCurve
+The following was detected at time: 0
+*** Warning: You are using a flow or pressure controlled mover with the
+             default pressure curve.
+             This leads to approximate calculations of the electrical power
+             consumption. Add the correct pressure curve in the record per
+             to obtain an accurate computation.
+             Setting nominalValuesDefineDefaultPressureCurve=true will suppress this warning.
+... loading "tab1" from "/home/justus/Documents/Topology_Analysis_5GDHC/Resources/Loads/LookUp_Table/cooling_ambient.mos"
+... loading "tab1" from "/home/justus/Documents/Topology_Analysis_5GDHC/Resources/Loads/LookUp_Table/heating_ambient.mos"
+Model: Topology_Analysis_5GDHC.Automated_5GDHC.Test
+Integration started at 0 using integration method:
+RK-method: radau IIa
+Local extrapolation
+FSAL
+Continuous extension
+
+Integration terminated successfully at T = 8.64e+06
+   CPU time for integration                  : 151.921 seconds
+   Number of result points                   : 501
+   Number of grid points                     : 500
+   Number of (successful) steps              : 14073
+   Number of rejected steps                  : 5835
+   Number of F-evaluations                   : 226619
+   Number of crossing function evaluations   : 42217
+   Number of Jacobian-evaluations            : 6451
+   Number of (model) time events             : 0
+   Number of state    events                 : 0
+   Number of step     events                 : 0

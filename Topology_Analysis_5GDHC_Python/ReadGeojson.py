@@ -92,44 +92,14 @@ def GeoDis(coords, direction):
     return round(geopy.distance.vincenty(co1, co2).m, 0)
 
 
+def main():
+    fn = '/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Automated_Model_Building/GeoJson/exportGeo_6_Buildings2.json'
+    return GetData(fn)
 
-
-#print GetData('/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Automated_Model_Building/GeoJson/exportGeo_2.json')
-
-def tester():
-    fn =  '/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Automated_Model_Building/GeoJson/exportGeo_6_Buildings2.json'
-    #co = GetBuildingCenter(fn)
-    #print dis2(co)
-    #print minDis(co)
-
-    #print dis([co[1], co[4]],4)
-    #print  dis([co[3][2], co[4][2]],1)
-
-    noDuplicates = False
-    s = [10, 10]
-    i = 0
-    while noDuplicates == False:
-        dups = set()
-        duplicates = []
-        i += 1
-        data = readFile(fn)
-        routes1 = []
-        for d in data[1]:
-            routes1.append(d[3])
-        for route in routes1:
-            if tuple(route) in dups:
-                duplicates.append(tuple(route))
-                #print('%s is a duplicate route' % route)
-            else:
-                dups.add(tuple(route))
-        if len(duplicates) <> 0:
-            noDuplicates = True
-        s = [s[0] + 5, s[1] + 5]
-        if i == 40:
-            noDuplicates = True
-            print "break"
-    for d in data[1]:
-        print d[3]
+if __name__ == '__main__':
+    districtData = main()
+    for prosumer in districtData:
+        print prosumer
 
 
 
@@ -137,10 +107,5 @@ def tester():
 
 
 
-
-
-
-
-#tester()
 
 

@@ -1,7 +1,8 @@
 import geopy.distance
 import numpy as np
 import os
-import shutil
+import csv_to_mos as cm
+
 
 
 class ModelicaModel(object):
@@ -20,6 +21,7 @@ class Prosumer(ModelicaModel):
         self.nodes = nodes
         self.prosumerType = prosumerType
 
+
 class Node(ModelicaModel):
     def __init__(self, model, name, pos, size, rotation, parameters=[]):
         super(Node, self).__init__(model, name, pos, size, rotation, parameters)
@@ -35,7 +37,7 @@ class Pipe(ModelicaModel):
         self.model2 = model2
 
 
-def SetTemplateModel(data, resultdir, modelicadir):
+def SetTemplateModel(data, modelicadir, loads):
     global modellist, pipeList, stepSize
     pipeList = []
     modellist = []
@@ -50,17 +52,17 @@ def SetTemplateModel(data, resultdir, modelicadir):
     dualPipeModel = "Topology_Analysis_5GDHC.Dual_Pipe.Dual_Pipe_HeatLoss"
 
     stepSize = max((len(data) * 20), 140)  # stepsize = edge length of a quadrant in the dymola grid
-    SetModellist(data, prosumerModel, sourceModel, nodeModel)
+    SetModellist(data, prosumerModel, sourceModel, nodeModel, loads)
     connectionMatrix = setConnectionMatrix(len(modellist))
     SetPipelist(connectionMatrix, dualPipeModel)
-    create5GDHCModel(GetDHCModulName(), extendedModuls, replaceablePackages, parameters, resultdir, modelicadir)
+    create5GDHCModel(GetDHCModulName(), extendedModuls, replaceablePackages, parameters, modelicadir)
     return modellist, pipeList
 
 def GetDHCModulName():
     dhcModel = "Test.mo"
     return dhcModel
 
-def SetModellist(data, prosumerModel, sourceModel, nodeModel):
+def SetModellist(data, prosumerModel, sourceModel, nodeModel, loads):
     for b in data:
         # defining the prosumer and source models, based on the data from the geoJson file
         pos = [(b[3][0] * stepSize + stepSize/2), (b[3][1] * stepSize + stepSize/2)]
@@ -69,7 +71,17 @@ def SetModellist(data, prosumerModel, sourceModel, nodeModel):
         node[0] = Node(nodeModel,(name + "_node_a"),nodePos(pos,-5,-37),6,0,["nPorts=%d" % (len(data)),"redeclare package Medium = Medium","m_flow_nominal=1"])
         node[1] = Node(nodeModel,(name + "_node_b"), nodePos(pos, +5, -37), 6, 0,["nPorts=%d" % (len(data)), "redeclare package Medium = Medium", "m_flow_nominal=1"])
         if b[0] == "Building":
-            modellist.append(Prosumer(prosumerModel, name, pos, 40, 0, ["redeclare package Medium = Medium"], b[0], b[2], node))
+            coolingDLoad = cm.ConvertCSV_Mos(loads[b[1]].cooling_ChilledWaterEnergy, name)
+            coolingDLoad_File = "Cooling_DQ_File = \"" + coolingDLoad[0] + "\""
+            coolingDLoad_nominal = "Q_nominal_cool = " + str(coolingDLoad[1])
+            coolingEle = cm.ConvertCSV_Mos(loads[b[1]].cooling_Electricity, name)
+            coolingEle_File = "Cooling_HP_ele_File =\"" + coolingEle[0] + "\""
+            heatingDLoad = cm.ConvertCSV_Mos(loads[b[1]].heating_HotWaterEnergy, name)
+            heatingDLoad_File = "Heating_DQ_File =\"" + heatingDLoad[0] + "\""
+            heatingDLoad_nominal = "Q_nominal_heat = " + str(heatingDLoad[1])
+            heatingEle = cm.ConvertCSV_Mos(loads[b[1]].heating_Electricity, name)
+            heatingEle_File = "Heating_HP_ele_File = \"" + heatingEle[0] + "\""
+            modellist.append(Prosumer(prosumerModel, name, pos, 40, 0, ["redeclare package Medium = Medium", coolingDLoad_File, coolingEle_File, heatingDLoad_File, heatingEle_File, heatingDLoad_nominal, coolingDLoad_nominal], b[0], b[2], node))
         elif b[0] == "District System":
             modellist.append(Prosumer(sourceModel, name, pos, 40, 0, ["redeclare package Medium = Medium", "m_flow_nominal=1"], b[0], b[2], node))
         else:
@@ -125,8 +137,8 @@ def formatSize(size):
     sizeStr = "{{%d,%d},{%d,%d}}" % (x[0],y[0],x[1],y[1])
     return sizeStr
 
-def create5GDHCModel(dhcModul, extendedModuls, replaceablePackages, parameters, resultdir, modelicadir):
-    resultFile = os.path.join(resultdir, dhcModul)
+def create5GDHCModel(dhcModul, extendedModuls, replaceablePackages, parameters, modelicadir):
+    resultFile = os.path.join(modelicadir, dhcModul)
     f = open(resultFile, "w+")
     f.write(initialise5GDHCModel(dhcModul, extendedModuls, replaceablePackages, parameters))
     for x in modellist: #Adding load models
@@ -159,10 +171,10 @@ def create5GDHCModel(dhcModul, extendedModuls, replaceablePackages, parameters, 
     f.write("\n")
     f.write(end5GDHCModel(dhcModul, size))
     f.close()
-    shutil.copy(resultFile, modelicadir)
+
 
 def initialise5GDHCModel(name, extendedModuls, replaceablePackages,  parameters):
-    addStr = ("within Topology_Analysis_5GDHC.Automated_5GDHC;\n")
+    addStr = ("within Topology_Analysis_5GDHC_DymolaModel.Automated_5GDHC;\n")
     addStr += ("model %s\n" % (name[:(len(name)-3)]))
     addStr += ("\n")
     for e in extendedModuls: #defining extended Moduls
@@ -193,15 +205,16 @@ def addModel(model, modelName, size, rotation, pos, parameters):
     return addStr
 
 def addAnalysisModels(gridSize):
+    # add models for the Topology Analysis
     global analysisModels
     analysisModels = []
     analysedProsumers = []
-    analyseDES = []
+    analysedDES = []
     for m in modellist:
         if m.prosumerType == "Building":
             analysedProsumers.append(m)
         elif m.prosumerType == "District System":
-            analyseDES.append(m)
+            analysedDES.append(m)
 
     startPosPumping = gridSize - 10
     startPosDH = startPosPumping - len(analysedProsumers) * 20 - 40
@@ -211,8 +224,8 @@ def addAnalysisModels(gridSize):
     startPosHPheat = startPosIC - len(analysedProsumers) * 20 - 40
     startPosHPcool = startPosHPheat - len(analysedProsumers) * 20 - 40
     startPosDESH = startPosHPcool - len(analysedProsumers) * 20 - 40
-    startPosDESC = startPosDESH - len(analyseDES) * 20 - 40
-    startPosHeatLoss = startPosDESC - len(analyseDES) * 20 - 30
+    startPosDESC = startPosDESH - len(analysedDES) * 20 - 40
+    startPosHeatLoss = startPosDESC - len(analysedDES) * 20 - 30
 
 
     analysisModels.append(SetAnalysesEnergyCalcModels(analysedProsumers, "Buildings_PumpingElectricity", gridSize, startPosPumping, "elePumps"))
@@ -222,8 +235,8 @@ def addAnalysisModels(gridSize):
     analysisModels.append(SetAnalysesEnergyCalcModels(analysedProsumers, "Buildings_IC", gridSize, startPosIC, "Q_IC"))
     analysisModels.append(SetAnalysesEnergyCalcModels(analysedProsumers, "Buildings_eleHP_heat", gridSize, startPosHPheat, "eleHP_heat"))
     analysisModels.append(SetAnalysesEnergyCalcModels(analysedProsumers, "Buildings_eleHP_cool", gridSize, startPosHPcool, "eleHP_cool"))
-    analysisModels.append(SetAnalysesEnergyCalcModels(analyseDES, "DES_heat", gridSize, startPosDESH, "Q_H_flow"))
-    analysisModels.append(SetAnalysesEnergyCalcModels(analyseDES, "DES_cool", gridSize, startPosDESC, "Q_C_flow"))
+    analysisModels.append(SetAnalysesEnergyCalcModels(analysedDES, "DES_heat", gridSize, startPosDESH, "Q_H_flow"))
+    analysisModels.append(SetAnalysesEnergyCalcModels(analysedDES, "DES_cool", gridSize, startPosDESC, "Q_C_flow"))
     analysisModels.append(SetAnalysesEnergyCalcModels(pipeList, "HeatLoss", gridSize, startPosHeatLoss, "heatLoss"))
 
     addStr = ""
@@ -236,8 +249,6 @@ def addAnalysisModels(gridSize):
             addStr += addModel(prosumer.model, prosumer.name, formatSize(prosumer.size), prosumer.rotation, formatPos(prosumer.pos), prosumer.parameters)
         addStr += ("\n")
     return addStr
-
-
 
 def SetAnalysesEnergyCalcModels(analysedObjects, name, gridSize, startPos, variable):
     expressionModel = "Modelica.Blocks.Sources.RealExpression"
@@ -365,22 +376,22 @@ def relPoint(start, relPath, onEdge = False):
         point = [start[0] + relPath[0], start[1] + relPath[1]]
     return point
 
-def tester():
+
+
+def main():
     import ReadGeojson
-
+    import GeoJson_Parser_Nic
     dirname = os.path.dirname(os.path.abspath(__file__))
-    urbanOptFile = dirname + '/GeoJson/exportGeo_6_Buildings2.json'
-    resultdir = dirname + '/Modelica_5GDHC_TemplateModel'
-    modelicaDir = dirname + '/Modelica_5GDHC_TemplateModel/Modelica'
-    data = ReadGeojson.GetData(urbanOptFile)
+    urbanOptFile = dirname + '/GeoJson/exportGeo_2.json'
+    modelicaDir = dirname + '/Modelica_5GDHC_TemplateModel'
+    loadDir = "/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Automated_Model_Building_v3/loads"
 
-    tempModel = SetTemplateModel(data, resultdir, modelicaDir)
-    modellist = tempModel[0]
-    pipelist = tempModel[1]
+    loads = GeoJson_Parser_Nic.GetBuildingLoads(loadDir, urbanOptFile)
+    data = ReadGeojson.GetData(urbanOptFile)
+    tempModel = SetTemplateModel(data, modelicaDir, loads)
     return tempModel
 
-    #for m in modellist:
-    #    print m.name#, m.prosumerType
-    #print pipelist
 
-tester()
+if __name__ == '__main__':
+   main()
+
