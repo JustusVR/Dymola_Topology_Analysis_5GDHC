@@ -314,7 +314,7 @@ def main():
     modelicaDir = dirname + '/Modelica_5GDHC_TemplateModel'
     alwaysActiveProsumers = ["District System"]
     urbanOptFile = dirname + '/GeoJson/exportGeo_2.json'
-    loadDir = "/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Automated_Model_Building_v3/loads"
+    loadDir = dirname + "/loads"
     loads = GeoJson_Parser_Nic.GetBuildingLoads(loadDir, urbanOptFile)
     scenario = SetSimulations(case = "ST", urbanOptFile = urbanOptFile, modelicaDir=modelicaDir, alwaysActiveProsumers=alwaysActiveProsumers, loads=loads)
     i = 0

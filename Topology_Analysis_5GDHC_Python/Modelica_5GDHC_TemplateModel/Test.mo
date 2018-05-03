@@ -10,10 +10,10 @@ model Test
 public
   Building.Automated_Model_Building.Building_TA_LookUp MediumOffice(
       redeclare package Medium = Medium,
-      Cooling_DQ_File = "/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Automated_Model_Building_v3/loads/TA/MediumOffice_mos_loads/cooling_DistrictCoolingChilledWaterEnergy_mass_flow_0.75.mos",
-      Cooling_HP_ele_File ="/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Automated_Model_Building_v3/loads/TA/MediumOffice_mos_loads/cooling_CoolingElectricity_mass_flow_0.75.mos",
-      Heating_DQ_File ="/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Automated_Model_Building_v3/loads/TA/MediumOffice_mos_loads/heating_DistrictHeatingHotWaterEnergy_mass_flow_0.25.mos",
-      Heating_HP_ele_File = "/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Automated_Model_Building_v3/loads/TA/MediumOffice_mos_loads/heating_HeatingElectricity_mass_flow_0.25.mos",
+      Cooling_DQ_File = "/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Topology_Analysis_5GDHC_Python/loads/TA/MediumOffice_mos_loads/cooling_DistrictCoolingChilledWaterEnergy_mass_flow_0.75.mos",
+      Cooling_HP_ele_File ="/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Topology_Analysis_5GDHC_Python/loads/TA/MediumOffice_mos_loads/cooling_CoolingElectricity_mass_flow_0.75.mos",
+      Heating_DQ_File ="/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Topology_Analysis_5GDHC_Python/loads/TA/MediumOffice_mos_loads/heating_DistrictHeatingHotWaterEnergy_mass_flow_0.25.mos",
+      Heating_HP_ele_File = "/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Topology_Analysis_5GDHC_Python/loads/TA/MediumOffice_mos_loads/heating_HeatingElectricity_mass_flow_0.25.mos",
       Q_nominal_heat = 9154.55,
       Q_nominal_cool = 19917.23)
       annotation (Placement(transformation(extent={{-20,-20},{20,20}},rotation = 0, origin = {70,350})));
@@ -32,10 +32,10 @@ protected
 public
   Building.Automated_Model_Building.Building_TA_LookUp Retail(
       redeclare package Medium = Medium,
-      Cooling_DQ_File = "/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Automated_Model_Building_v3/loads/TA/Retail_mos_loads/cooling_DistrictCoolingChilledWaterEnergy_mass_flow_0.75.mos",
-      Cooling_HP_ele_File ="/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Automated_Model_Building_v3/loads/TA/Retail_mos_loads/cooling_CoolingElectricity_mass_flow_0.75.mos",
-      Heating_DQ_File ="/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Automated_Model_Building_v3/loads/TA/Retail_mos_loads/heating_DistrictHeatingHotWaterEnergy_mass_flow_0.25.mos",
-      Heating_HP_ele_File = "/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Automated_Model_Building_v3/loads/TA/Retail_mos_loads/heating_HeatingElectricity_mass_flow_0.25.mos",
+      Cooling_DQ_File = "/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Topology_Analysis_5GDHC_Python/loads/TA/Retail_mos_loads/cooling_DistrictCoolingChilledWaterEnergy_mass_flow_0.75.mos",
+      Cooling_HP_ele_File ="/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Topology_Analysis_5GDHC_Python/loads/TA/Retail_mos_loads/cooling_CoolingElectricity_mass_flow_0.75.mos",
+      Heating_DQ_File ="/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Topology_Analysis_5GDHC_Python/loads/TA/Retail_mos_loads/heating_DistrictHeatingHotWaterEnergy_mass_flow_0.25.mos",
+      Heating_HP_ele_File = "/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Topology_Analysis_5GDHC_Python/loads/TA/Retail_mos_loads/heating_HeatingElectricity_mass_flow_0.25.mos",
       Q_nominal_heat = 9154.55,
       Q_nominal_cool = 19917.23)
       annotation (Placement(transformation(extent={{-20,-20},{20,20}},rotation = 0, origin = {70,210})));
@@ -54,10 +54,10 @@ protected
 public
   Building.Automated_Model_Building.Building_TA_LookUp MultiFamily(
       redeclare package Medium = Medium,
-      Cooling_DQ_File = "/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Automated_Model_Building_v3/loads/TA/MultiFamily_mos_loads/cooling_DistrictCoolingChilledWaterEnergy_mass_flow_0.75.mos",
-      Cooling_HP_ele_File ="/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Automated_Model_Building_v3/loads/TA/MultiFamily_mos_loads/cooling_CoolingElectricity_mass_flow_0.75.mos",
-      Heating_DQ_File ="/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Automated_Model_Building_v3/loads/TA/MultiFamily_mos_loads/heating_DistrictHeatingHotWaterEnergy_mass_flow_0.25.mos",
-      Heating_HP_ele_File = "/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Automated_Model_Building_v3/loads/TA/MultiFamily_mos_loads/heating_HeatingElectricity_mass_flow_0.25.mos",
+      Cooling_DQ_File = "/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Topology_Analysis_5GDHC_Python/loads/TA/MultiFamily_mos_loads/cooling_DistrictCoolingChilledWaterEnergy_mass_flow_0.75.mos",
+      Cooling_HP_ele_File ="/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Topology_Analysis_5GDHC_Python/loads/TA/MultiFamily_mos_loads/cooling_CoolingElectricity_mass_flow_0.75.mos",
+      Heating_DQ_File ="/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Topology_Analysis_5GDHC_Python/loads/TA/MultiFamily_mos_loads/heating_DistrictHeatingHotWaterEnergy_mass_flow_0.25.mos",
+      Heating_HP_ele_File = "/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Topology_Analysis_5GDHC_Python/loads/TA/MultiFamily_mos_loads/heating_HeatingElectricity_mass_flow_0.25.mos",
       Q_nominal_heat = 9154.55,
       Q_nominal_cool = 19917.23)
       annotation (Placement(transformation(extent={{-20,-20},{20,20}},rotation = 0, origin = {70,-70})));

@@ -40,7 +40,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Automated_Model_Building/venv"
+VIRTUAL_ENV="/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Topology_Analysis_5GDHC_Python/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

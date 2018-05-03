@@ -47,9 +47,9 @@ def SetTemplateModel(data, modelicadir, loads):
     extendedModuls = ["Modelica.Icons.Example"]
 
     prosumerModel = "Building.Automated_Model_Building.Building_TA_LookUp"
-    sourceModel = "Topology_Analysis_5GDHC.DES.Ideal_T_JVR"
+    sourceModel = "Topology_Analysis_5GDHC_DymolaModel.DES.Ideal_T_JVR"
     nodeModel = "Buildings.Fluid.Delays.DelayFirstOrder"
-    dualPipeModel = "Topology_Analysis_5GDHC.Dual_Pipe.Dual_Pipe_HeatLoss"
+    dualPipeModel = "Topology_Analysis_5GDHC_DymolaModel.Dual_Pipe.Dual_Pipe_HeatLoss"
 
     stepSize = max((len(data) * 20), 140)  # stepsize = edge length of a quadrant in the dymola grid
     SetModellist(data, prosumerModel, sourceModel, nodeModel, loads)
@@ -383,8 +383,9 @@ def main():
     import GeoJson_Parser_Nic
     dirname = os.path.dirname(os.path.abspath(__file__))
     urbanOptFile = dirname + '/GeoJson/exportGeo_2.json'
-    modelicaDir = dirname + '/Modelica_5GDHC_TemplateModel'
-    loadDir = "/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Automated_Model_Building_v3/loads"
+    modelicaDir = '/home/justus/Documents/Topology_Analysis_5GDHC_DymolaModel/Automated_5GDHC'
+    #modelicaDir = dirname + '/Modelica_5GDHC_TemplateModel'
+    loadDir = dirname + "/loads"
 
     loads = GeoJson_Parser_Nic.GetBuildingLoads(loadDir, urbanOptFile)
     data = ReadGeojson.GetData(urbanOptFile)

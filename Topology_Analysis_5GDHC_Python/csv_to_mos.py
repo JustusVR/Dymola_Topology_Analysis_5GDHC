@@ -71,7 +71,8 @@ def correctHeader(file, oldStr, newStr):
     f.close()
 
 def main():
-    files = ['/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Automated_Model_Building_v3/loads/cooling_DistrictCoolingChilledWaterEnergy_mass_flow_0.75.csv', '/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Automated_Model_Building_v3/loads/cooling_CoolingElectricity_mass_flow_0.75.csv', '/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Automated_Model_Building_v3/loads/heating_DistrictHeatingHotWaterEnergy_mass_flow_0.25.csv', '/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Automated_Model_Building_v3/loads/heating_HeatingElectricity_mass_flow_0.25.csv']
+    dirname = os.path.dirname(os.path.abspath(__file__))
+    files = [ dirname + '/loads/cooling_DistrictCoolingChilledWaterEnergy_mass_flow_0.75.csv', dirname + '/loads/cooling_CoolingElectricity_mass_flow_0.75.csv', dirname + '/loads/heating_DistrictHeatingHotWaterEnergy_mass_flow_0.25.csv', dirname + '/loads/heating_HeatingElectricity_mass_flow_0.25.csv']
     testMosDir = 'test1'
     for file in files:
         print ConvertCSV_Mos(file, testMosDir)
