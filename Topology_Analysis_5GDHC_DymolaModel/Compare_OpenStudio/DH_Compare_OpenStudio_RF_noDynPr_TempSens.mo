@@ -95,8 +95,8 @@ public
         rotation=-90,
         origin={380,-40})));
 public
-  DES.Ideal_Source.Heater_Chiller_noDyn HeaterChiller(redeclare package Medium
-      = Medium) "Model to set the reference pressure" annotation (Placement(
+  DES.Ideal_Source.Heater_Chiller_noDyn HeaterChiller(redeclare package Medium =
+        Medium) "Model to set the reference pressure" annotation (Placement(
         transformation(
         extent={{-23,-21},{23,21}},
         origin={-533,3},
@@ -158,8 +158,8 @@ public
   Buildings.Fluid.Sensors.Temperature Outlet_Temp_plant(redeclare package
       Medium = Medium)
     annotation (Placement(transformation(extent={{-630,60},{-610,80}})));
-  Buildings.Fluid.Sensors.Temperature Inlet_Temp_plant(redeclare package Medium
-      =        Medium)
+  Buildings.Fluid.Sensors.Temperature Inlet_Temp_plant(redeclare package Medium =
+               Medium)
     annotation (Placement(transformation(extent={{-628,-42},{-608,-22}})));
 equation
   connect(SumPumps.y, EPumps.u)

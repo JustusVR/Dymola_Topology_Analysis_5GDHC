@@ -1,13 +1,15 @@
 within Topology_Analysis_5GDHC_DymolaModel.Dual_Pipe;
 model Dual_Pipe_HeatLoss
+  // lambda value from measurements of the Eurac Lab
+  // insulation thickness from paper by Lund: "Choice of insulation standard for pipe networks in 4th generation district heating systems"
 
   replaceable package Medium =
       Modelica.Media.Interfaces.PartialMedium "Medium model for water";
 
   parameter Modelica.SIunits.Length diameter = sqrt(4*m_flow_nominal/pip_hot.rho_default/pip_hot.v_nominal/Modelica.Constants.pi) "Pipe diameter";
   parameter Modelica.SIunits.Length length "lenght of pipe";
-  parameter Modelica.SIunits.ThermalConductivity lambdaIns = 1 "Heat conductivity of insulation";
-  parameter Modelica.SIunits.Length thicknessIns = 0.02 "Thickness of insulation";
+  parameter Modelica.SIunits.ThermalConductivity lambdaIns = 0.04 "Heat conductivity of insulation";
+  parameter Modelica.SIunits.Length thicknessIns = 0.04 "Thickness of insulation";
   parameter Modelica.SIunits.MassFlowRate m_flow_nominal;
   parameter Boolean active = true;
 

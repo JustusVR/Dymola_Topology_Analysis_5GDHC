@@ -3,6 +3,7 @@ model Test_plant "Test of a pipe with multiple segments"
   extends Modelica.Icons.Example;
 
   replaceable package Medium = Buildings.Media.Water;
+  parameter Modelica.SIunits.MassFlowRate m_flow_nominal_district = 1 "nominal mass flow rate of the whole district";
 
   Buildings.Fluid.Sensors.Temperature senTem_b(redeclare package Medium =
         Medium)
@@ -10,8 +11,6 @@ model Test_plant "Test of a pipe with multiple segments"
   Buildings.Fluid.Sensors.Temperature senTem_a(redeclare package Medium =
         Medium)
     annotation (Placement(transformation(extent={{130,20},{150,40}})));
-  DES.Ideal_T_JVR ideal_T_JVR(redeclare package Medium = Medium, m_flow_nominal=
-       1) annotation (Placement(transformation(extent={{180,20},{236,80}})));
   Building.Automated_Model_Building.Building_bidirectional
     building_bidirectional(redeclare package Medium = Medium)
     annotation (Placement(transformation(extent={{-60,20},{-4,80}})));
@@ -19,22 +18,25 @@ model Test_plant "Test of a pipe with multiple segments"
     redeclare package Medium = Medium,
     diameter=0.5,
     length=100,
-    m_flow_nominal=1)
+    m_flow_nominal=m_flow_nominal_district)
     annotation (Placement(transformation(extent={{60,-20},{80,0}})));
+  DES.Old.Heat_Pump heat_Pump(redeclare package Medium = Medium, m_flow_nominal=
+       m_flow_nominal_district)
+    annotation (Placement(transformation(extent={{182,30},{242,90}})));
 equation
 
   connect(building_bidirectional.port_a, dual_Pipe.port_a_hot)
     annotation (Line(points={{-40,20},{-40,-5},{59.8,-5}}, color={0,127,255}));
   connect(building_bidirectional.port_b, dual_Pipe.port_a_cold)
     annotation (Line(points={{-24,20},{-24,-16},{60,-16}}, color={0,127,255}));
-  connect(dual_Pipe.port_b_hot, ideal_T_JVR.port_a)
-    annotation (Line(points={{79.8,-5},{200,-5},{200,20}}, color={0,127,255}));
-  connect(dual_Pipe.port_b_cold, ideal_T_JVR.port_b) annotation (Line(points={{
-          79.8,-16},{216,-16},{216,20}}, color={0,127,255}));
   connect(dual_Pipe.port_b_hot, senTem_a.port) annotation (Line(points={{79.8,
           -5},{119.9,-5},{119.9,20},{140,20}}, color={0,127,255}));
   connect(senTem_b.port, dual_Pipe.port_b_cold) annotation (Line(points={{140,
           -40},{120,-40},{120,-16},{79.8,-16}}, color={0,127,255}));
+  connect(heat_Pump.port_a, senTem_a.port) annotation (Line(points={{203.429,30},
+          {203.429,-8},{180,-8},{180,20},{140,20}}, color={0,127,255}));
+  connect(heat_Pump.port_b, senTem_b.port) annotation (Line(points={{220.571,30},
+          {220.571,-40},{140,-40}}, color={0,127,255}));
   annotation (
     Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-200,-100},{260,
             100}})),

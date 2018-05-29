@@ -18,15 +18,16 @@ public
     annotation (Placement(transformation(extent={{280,492},{300,512}})));
   Modelica.Blocks.Sources.Constant TSetCool(k=273.15 + 16)
     annotation (Placement(transformation(extent={{280,460},{300,480}})));
-  Dual_Pipe.Dual_Pipe dual_Pipe(
+  Dual_Pipe.Dual_Pipe_HeatLoss
+                      dual_Pipe(
     length=100,
     m_flow_nominal=1,
     redeclare package Medium = Medium) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
         origin={-2,16})));
-  Building.Automated_Model_Building.Building_TA_LookUp Office2(redeclare
-      package Medium = Medium, connected=false) annotation (Placement(
+  Building.Automated_Model_Building.Building_TA_LookUp     Office2(redeclare
+      package Medium = Medium, connected=true) annotation (Placement(
         transformation(
         extent={{-20,-20},{20,20}},
         rotation=0,

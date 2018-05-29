@@ -1,47 +1,31 @@
 Log-file of program ./dymosim
-(generated: Sun Apr 29 21:44:33 2018)
+(generated: Mon May 28 21:23:08 2018)
 
 dymosim started
 ... "dsin.txt" loading (dymosim input file)
-Office2.pump_heat.nominalValuesDefineDefaultPressureCurve
-The following was detected at time: 0
-*** Warning: You are using a flow or pressure controlled mover with the
-             default pressure curve.
-             This leads to approximate calculations of the electrical power
-             consumption. Add the correct pressure curve in the record per
-             to obtain an accurate computation.
-             Setting nominalValuesDefineDefaultPressureCurve=true will suppress this warning.
-Office2.pump_cool.nominalValuesDefineDefaultPressureCurve
-The following was detected at time: 0
-*** Warning: You are using a flow or pressure controlled mover with the
-             default pressure curve.
-             This leads to approximate calculations of the electrical power
-             consumption. Add the correct pressure curve in the record per
-             to obtain an accurate computation.
-             Setting nominalValuesDefineDefaultPressureCurve=true will suppress this warning.
-... loading "tab1" from "/home/justus/Documents/Topology_Analysis_5GDHC_DymolaModel/Resources/Loads/LookUp_Table/cooling_ambient.mos"
-... loading "tab1" from "/home/justus/Documents/Topology_Analysis_5GDHC_DymolaModel/Resources/Loads/LookUp_Table/cooling_system.mos"
-... loading "tab1" from "/home/justus/Documents/Topology_Analysis_5GDHC_DymolaModel/Resources/Loads/LookUp_Table/heating_ambient.mos"
-... loading "tab1" from "/home/justus/Documents/Topology_Analysis_5GDHC_DymolaModel/Resources/Loads/LookUp_Table/heating_system.mos"
-... "Test_Building.mat" creating (simulation result file)
+... loading "data" from "/home/justus/Documents/Topology_Analysis_5GDHC_DymolaModel/Resources/Validation/Temperature_Degradation_Test1/TEST1_TM20.mos"
+... loading "data" from "/home/justus/Documents/Topology_Analysis_5GDHC_DymolaModel/Resources/Validation/Temperature_Degradation_Test1/TEST1_FM01.mos"
+... loading "data" from "/home/justus/Documents/Topology_Analysis_5GDHC_DymolaModel/Resources/Validation/Temperature_Degradation_Test1/TEST1_TM02.mos"
+... loading "data" from "/home/justus/Documents/Topology_Analysis_5GDHC_DymolaModel/Resources/Validation/Temperature_Degradation_Test1/TEST1_TM01.mos"
+... "Temperature_Degradation_justuspipe.mat" creating (simulation result file)
 
 Integration started at T = 0 using integration method DASSL
 (DAE multi-step solver (dassl/dasslrt of Petzold modified by Dynasim))
-Integration terminated successfully at T = 1
-   CPU-time for integration      : 0.0225 seconds
-   CPU-time for one GRID interval: 0.045 milli-seconds
-   Number of result points       : 502
+Integration terminated successfully at T = 108000
+   CPU-time for integration      : 0.0276 seconds
+   CPU-time for one GRID interval: 0.0553 milli-seconds
+   Number of result points       : 504
    Number of GRID   points       : 501
-   Number of (successful) steps  : 19
-   Number of F-evaluations       : 253
-   Number of H-evaluations       : 519
-   Number of Jacobian-evaluations: 18
-   Number of (model) time events : 0
+   Number of (successful) steps  : 137
+   Number of F-evaluations       : 375
+   Number of H-evaluations       : 638
+   Number of Jacobian-evaluations: 38
+   Number of (model) time events : 1
    Number of (U) time events     : 0
    Number of state    events     : 0
    Number of step     events     : 0
-   Minimum integration stepsize  : 2e-06
-   Maximum integration stepsize  : 0.476
-   Maximum integration order     : 1
+   Minimum integration stepsize  : 0.000312
+   Maximum integration stepsize  : 3.36e+04
+   Maximum integration order     : 5
 Calling terminal section
 ... "dsfinal.txt" creating (final states)

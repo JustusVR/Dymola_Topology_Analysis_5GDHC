@@ -1,0 +1,78 @@
+within Topology_Analysis_5GDHC_DymolaModel.Validation;
+model Test_Heater
+
+  extends Modelica.Icons.Example;
+
+replaceable package Medium =
+      Buildings.Media.Water "Medium model for water";
+
+public
+  Buildings.Fluid.Sources.FixedBoundary sin(redeclare package Medium = Medium,
+      nPorts=1) annotation (Placement(transformation(extent={{10,-10},{-10,10}},
+          origin={70,0})));
+public
+  Buildings.Fluid.Sources.FixedBoundary sin1(
+                                            redeclare package Medium = Medium,
+    use_T=false,
+    nPorts=1)   annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+          origin={-68,0})));
+  Modelica.Blocks.Sources.Constant TSetHeat(k=273.15 + 20)
+    annotation (Placement(transformation(extent={{280,492},{300,512}})));
+  Modelica.Blocks.Sources.Constant TSetCool(k=273.15 + 16)
+    annotation (Placement(transformation(extent={{280,460},{300,480}})));
+  Dual_Pipe.Dual_Pipe_HeatLoss
+                      dual_Pipe(
+    length=100,
+    m_flow_nominal=1,
+    redeclare package Medium = Medium) annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={0,16})));
+  Buildings.Fluid.Delays.DelayFirstOrder Office2_node_a(
+      nPorts=1,
+      redeclare package Medium = Medium,
+      m_flow_nominal=1)
+      annotation (Placement(transformation(extent={{-3,-3},{3,3}},rotation = 0, origin={-5,37})));
+  Buildings.Fluid.Delays.DelayFirstOrder Office2_node_b(
+      nPorts=1,
+      redeclare package Medium = Medium,
+      m_flow_nominal=1)
+      annotation (Placement(transformation(extent={{-3,-3},{3,3}},rotation = 0, origin={5,37})));
+  Buildings.Fluid.HeatExchangers.Heater_T hea(dp_nominal(displayUnit="MPa") = 50000,
+      m_flow_nominal=m_flow_nominal_district,
+    redeclare package Medium = Medium)        annotation (Placement(
+        transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=0,
+        origin={0,70})));
+  Modelica.Blocks.Sources.CombiTimeTable Data_TM20(
+    timeScale(displayUnit="min") = 300,
+    tableOnFile=true,
+    tableName="data",
+    fileName=
+        "/home/justus/Documents/Topology_Analysis_5GDHC_DymolaModel/Resources/Validation/Temperature_Degradation_Test1/TEST1_TM20.mos")
+    annotation (Placement(transformation(extent={{-120,38},{-100,58}})));
+  Modelica.Thermal.HeatTransfer.Celsius.ToKelvin toKelvin
+    annotation (Placement(
+        transformation(
+        extent={{-5,-5},{5,5}},
+        rotation=0,
+        origin={-70,48})));
+equation
+
+  connect(sin1.ports[1], dual_Pipe.port_a_hot)
+    annotation (Line(points={{-58,0},{-5,0},{-5,5.8}}, color={0,127,255}));
+  connect(sin.ports[1], dual_Pipe.port_a_cold)
+    annotation (Line(points={{60,0},{6,0},{6,6}}, color={0,127,255}));
+  connect(dual_Pipe.port_b_hot, Office2_node_a.ports[1]) annotation (Line(
+        points={{-5,25.8},{-5,34}},                         color={0,127,255}));
+  connect(dual_Pipe.port_b_cold, Office2_node_b.ports[1]) annotation (Line(
+        points={{6,25.8},{6,34},{5,34}},          color={0,127,255}));
+  connect(Data_TM20.y[1],toKelvin. Celsius)
+    annotation (Line(points={{-99,48},{-76,48}},     color={0,0,127}));
+  connect(toKelvin.Kelvin,hea. TSet) annotation (Line(points={{-64.5,48},{-46,
+          48},{-46,78},{-12,78}},color={0,0,127}));
+    annotation (choicesAllMatching = true,
+    Diagram(coordinateSystem(extent={{-140,-100},{140,120}})),
+    Icon(coordinateSystem(extent={{-140,-100},{140,120}})));
+end Test_Heater;

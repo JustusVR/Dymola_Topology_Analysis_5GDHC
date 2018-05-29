@@ -1,0 +1,127 @@
+within Topology_Analysis_5GDHC_DymolaModel.Validation;
+model Tester
+
+  extends Modelica.Icons.Example;
+
+replaceable package Medium =
+      Buildings.Media.Water "Medium model for water";
+
+public
+  Buildings.Fluid.Sources.FixedBoundary sin(redeclare package Medium = Medium,
+      nPorts=1,
+    T=340.15)   annotation (Placement(transformation(extent={{10,-10},{-10,10}},
+          origin={70,0})));
+public
+  Buildings.Fluid.Sources.FixedBoundary sin1(
+                                            redeclare package Medium = Medium,
+    nPorts=1,
+    use_T=true,
+    T=340.15)   annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+          origin={-68,0})));
+  Modelica.Blocks.Sources.Constant TSetHeat(k=273.15 + 20)
+    annotation (Placement(transformation(extent={{280,492},{300,512}})));
+  Modelica.Blocks.Sources.Constant TSetCool(k=273.15 + 16)
+    annotation (Placement(transformation(extent={{280,460},{300,480}})));
+public
+  Buildings.Fluid.Sources.FixedBoundary sin2(
+                                            redeclare package Medium = Medium,
+    use_T=false,
+    nPorts=1)   annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+          origin={-70,100})));
+public
+  Buildings.Fluid.Sources.FixedBoundary sin3(
+                                            redeclare package Medium = Medium,
+      nPorts=1) annotation (Placement(transformation(extent={{10,-10},{-10,10}},
+          origin={70,100})));
+public
+  Buildings.Fluid.Movers.FlowControlled_m_flow pump_heat(
+    redeclare package Medium = Medium,
+    addPowerToMedium=false,
+    inputType=Buildings.Fluid.Types.InputType.Continuous,
+    m_flow_start=1,
+    use_inputFilter=false,
+    m_flow_nominal=1,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial)
+    annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},rotation=0,origin={-38,0})));
+public
+  Buildings.Fluid.Movers.FlowControlled_m_flow pump_heat1(
+    redeclare package Medium = Medium,
+    addPowerToMedium=false,
+    m_flow_start=1,
+    use_inputFilter=false,
+    inputType=1,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
+    m_flow_nominal=1)
+    annotation (Placement(transformation(
+        extent={{10,-10},{-10,10}},rotation=0,origin={34,0})));
+protected
+  Modelica.Blocks.Sources.RealExpression m_flow_water(y=1) annotation (
+      Placement(transformation(
+        extent={{10,-10},{-10,10}},
+        rotation=-90,
+        origin={0,-70})));
+public
+  Pipe_Validation pip_convection(
+    redeclare package Medium = Medium,
+    m_flow_nominal=1,
+    lambdaIns=0.04,
+    nSeg=10,
+    thicknessIns(displayUnit="mm") = 0.06,
+    diameter(displayUnit="mm") = 0.0889,
+    length=54)  annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={-20,50})));
+  Buildings.Fluid.FixedResistances.Pipe pip_noConvection(
+    redeclare package Medium = Medium,
+    m_flow_nominal=1,
+    nSeg=1,
+    length=54,
+    thicknessIns(displayUnit="mm") = 0.06,
+    diameter(displayUnit="mm") = 0.0889,
+    lambdaIns=0.038) annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={20,50})));
+  Modelica.Thermal.HeatTransfer.Celsius.PrescribedTemperature
+    prescribedTemperature
+    annotation (Placement(transformation(extent={{-100,40},{-80,60}})));
+protected
+  Modelica.Blocks.Sources.RealExpression T_amb(y=20)
+                                                    annotation (Placement(
+        transformation(
+        extent={{10,-10},{-10,10}},
+        rotation=180,
+        origin={-124,50})));
+equation
+
+  connect(sin1.ports[1], pump_heat.port_a)
+    annotation (Line(points={{-58,0},{-48,0}}, color={0,127,255}));
+  connect(sin.ports[1], pump_heat1.port_a)
+    annotation (Line(points={{60,0},{44,0}}, color={0,127,255}));
+  connect(m_flow_water.y, pump_heat.m_flow_in) annotation (Line(points={{
+          1.77636e-15,-59},{0,-59},{0,-40},{-20,-40},{-20,20},{-38,20},{-38,12}},
+        color={0,0,127}));
+  connect(m_flow_water.y, pump_heat1.m_flow_in) annotation (Line(points={{
+          1.9984e-15,-59},{1.9984e-15,-60},{0,-60},{0,-60},{0,-40},{50,-40},{50,
+          20},{34,20},{34,12}}, color={0,0,127}));
+  connect(pump_heat.port_b, pip_convection.port_a)
+    annotation (Line(points={{-28,0},{-20,0},{-20,40}}, color={0,127,255}));
+  connect(pip_convection.port_b, sin2.ports[1]) annotation (Line(points={{-20,
+          60},{-20,100},{-60,100}}, color={0,127,255}));
+  connect(pip_noConvection.port_a, pump_heat1.port_b)
+    annotation (Line(points={{20,40},{20,0},{24,0}}, color={0,127,255}));
+  connect(pip_noConvection.port_b, sin3.ports[1])
+    annotation (Line(points={{20,60},{20,100},{60,100}}, color={0,127,255}));
+  connect(prescribedTemperature.port, pip_convection.heatPort)
+    annotation (Line(points={{-80,50},{-25,50}}, color={191,0,0}));
+  connect(prescribedTemperature.port, pip_noConvection.heatPort) annotation (
+      Line(points={{-80,50},{-60,50},{-60,74},{0,74},{0,50},{15,50}}, color={
+          191,0,0}));
+  connect(T_amb.y, prescribedTemperature.T)
+    annotation (Line(points={{-113,50},{-102,50}}, color={0,0,127}));
+    annotation (choicesAllMatching = true,
+    Diagram(coordinateSystem(extent={{-140,-100},{140,120}})),
+    Icon(coordinateSystem(extent={{-140,-100},{140,120}})));
+end Tester;

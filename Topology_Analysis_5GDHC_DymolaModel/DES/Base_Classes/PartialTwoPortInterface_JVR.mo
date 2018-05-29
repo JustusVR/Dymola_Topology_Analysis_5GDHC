@@ -1,8 +1,9 @@
-within Topology_Analysis_5GDHC_DymolaModel.DES;
+within Topology_Analysis_5GDHC_DymolaModel.DES.Base_Classes;
 partial model PartialTwoPortInterface_JVR
   "Partial model transporting fluid between two ports without storing mass or energy"
-  extends Topology_Analysis_5GDHC_DymolaModel.DES.PartialTwoPort_JVR(port_a(p(
-          start=Medium.p_default)), port_b(p(start=Medium.p_default)));
+  extends
+    Topology_Analysis_5GDHC_DymolaModel.DES.Base_Classes.PartialTwoPort_JVR(
+      port_a(p(start=Medium.p_default)), port_b(p(start=Medium.p_default)));
 
   parameter Modelica.SIunits.MassFlowRate m_flow_nominal
     "Nominal mass flow rate"

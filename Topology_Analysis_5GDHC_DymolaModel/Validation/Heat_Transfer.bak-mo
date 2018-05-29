@@ -1,0 +1,41 @@
+within Topology_Analysis_5GDHC_DymolaModel.Validation;
+model Heat_Transfer
+    parameter Modelica.SIunits.ThermalConductance G "Constant thermal conductance of material";
+  Modelica.Thermal.HeatTransfer.Components.ThermalConductor conPipWal(each G=G)
+    "Thermal conductance through pipe wall"
+    annotation (Placement(transformation(extent={{-52,-10},{-72,10}})));
+  Modelica.Thermal.HeatTransfer.Components.Convection
+                                             con
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+        rotation=0,
+        origin={0,0})));
+  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a port_a
+    annotation (Placement(transformation(extent={{88,-10},{108,10}})));
+  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b port_b
+    annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
+public
+  Modelica.Blocks.Sources.CombiTimeTable Data_WS01(
+    tableOnFile=true,
+    tableName="data",
+    timeScale(displayUnit="s") = 1,
+    fileName=
+        "/home/justus/Documents/Topology_Analysis_5GDHC_DymolaModel/Resources/Validation/Temperature_Degradation_Test1/TEST1_WS01.mos")
+    annotation (Placement(transformation(extent={{80,60},{60,80}})));
+  Modelica.Blocks.Sources.Constant alphaPipe(k=35)
+    "Outdoor coefficient of heat transfer for walls"
+    annotation (Placement(transformation(extent={{-4,-4},{4,4}},rotation=0,
+    origin={-26,48})));
+equation
+  connect(port_a, port_a)
+    annotation (Line(points={{98,0},{98,0}}, color={191,0,0}));
+  connect(port_b, conPipWal.port_b)
+    annotation (Line(points={{-100,0},{-72,0}}, color={191,0,0}));
+  connect(conPipWal.port_a, con.solid)
+    annotation (Line(points={{-52,0},{-10,0}}, color={191,0,0}));
+  connect(con.fluid, port_a)
+    annotation (Line(points={{10,0},{98,0}}, color={191,0,0}));
+  connect(alphaPipe.y, con.Gc)
+    annotation (Line(points={{-21.6,48},{0,48},{0,10}}, color={0,0,127}));
+  annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+        coordinateSystem(preserveAspectRatio=false)));
+end Heat_Transfer;

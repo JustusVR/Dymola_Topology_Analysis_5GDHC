@@ -43,9 +43,11 @@ replaceable package Medium =
     m_flow_nominal=1,
     diameter=0.5)
     annotation (Placement(transformation(extent={{-60,-80},{-40,-60}})));
-  DES.Ideal_T_JVR                         NewDistrictSystem(
-      redeclare package Medium = Medium, m_flow_nominal=1)
-      annotation (Placement(transformation(extent={{-20,-20},{20,20}},rotation = 0, origin={100,40})));
+  DES.Old.Ideal_T_JVR NewDistrictSystem(redeclare package Medium = Medium,
+      m_flow_nominal=1) annotation (Placement(transformation(
+        extent={{-20,-20},{20,20}},
+        rotation=0,
+        origin={100,40})));
   Buildings.Fluid.Delays.DelayFirstOrder NewDistrictSystem_node_a(
       nPorts=3,
       redeclare package Medium = Medium,

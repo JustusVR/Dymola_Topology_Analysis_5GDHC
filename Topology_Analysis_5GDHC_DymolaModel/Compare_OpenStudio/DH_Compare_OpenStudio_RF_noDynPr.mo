@@ -95,8 +95,8 @@ public
         rotation=-90,
         origin={380,-40})));
 public
-  DES.Ideal_Source.Heater_Chiller_noDyn HeaterChiller(redeclare package Medium
-      = Medium) "Model to set the reference pressure" annotation (Placement(
+  DES.Ideal_Source.Heater_Chiller_noDyn HeaterChiller(redeclare package Medium =
+        Medium) "Model to set the reference pressure" annotation (Placement(
         transformation(
         extent={{-23,-21},{23,21}},
         origin={-533,3},

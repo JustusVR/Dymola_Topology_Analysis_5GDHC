@@ -171,7 +171,7 @@ public
      annotation (Placement(
         transformation(extent={{22,230},{38,246}}),     iconTransformation(
           extent={{-328,64},{-308,84}})));
-  DES.Ideal_T_JVR des(redeclare package Medium = Medium, m_flow_nominal=1)
+  DES.Old.Ideal_T_JVR des(redeclare package Medium = Medium, m_flow_nominal=1)
     "Model to set the reference pressure" annotation (Placement(transformation(
         extent={{-23,-21},{23,21}},
         origin={-567,79},
@@ -285,17 +285,17 @@ equation
   connect(SumPumps.y, EPumps.u)
     annotation (Line(points={{431.02,360},{452,360}}, color={0,0,127}));
   connect(SumPumps.u[1], linRegBuilding4.elePumps) annotation (Line(points={{418,
-          363.36},{418,362},{360,362},{360,31},{322,31}},   color={0,0,127}));
+          363.36},{418,362},{360,362},{360,31},{300,31}},   color={0,0,127}));
   connect(SumPumps.u[2], linRegBuilding3.elePumps) annotation (Line(points={{418,
-          361.68},{314,361.68},{314,362},{196,362},{196,42},{162,42},{162,31}},
+          361.68},{314,361.68},{314,362},{196,362},{196,42},{140,42},{140,31}},
         color={0,0,127}));
   connect(SumPumps.u[3], linRegBuilding2.elePumps) annotation (Line(points={{418,360},
-          {40,360},{40,40},{2,40},{2,31}},            color={0,0,127}));
+          {40,360},{40,40},{-20,40},{-20,31}},        color={0,0,127}));
   connect(SumPumps.u[4], linRegBuilding1.elePumps) annotation (Line(points={{418,
-          358.32},{418,362},{-120,362},{-120,31},{-156,31}},
+          358.32},{418,362},{-120,362},{-120,31},{-178,31}},
         color={0,0,127}));
   connect(SumPumps.u[5], linRegBuilding.elePumps) annotation (Line(points={{418,
-          356.64},{418,356},{422,356},{422,362},{-282,362},{-282,33},{-316,33}},
+          356.64},{418,356},{422,356},{422,362},{-282,362},{-282,33},{-338,33}},
                         color={0,0,127}));
 
   connect(des.port_b, pip.port_a) annotation (Line(points={{-560.429,58},{

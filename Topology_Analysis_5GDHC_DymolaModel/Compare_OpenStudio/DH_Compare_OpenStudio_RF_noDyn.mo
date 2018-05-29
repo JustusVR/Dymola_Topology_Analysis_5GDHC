@@ -184,8 +184,8 @@ protected
     dp_nominal=40*R_nominal*{0,1,1})
     annotation (Placement(transformation(extent={{-270,-70},{-250,-90}})));
 public
-  DES.Ideal_Source.Heater_Chiller_noDyn HeaterChiller(redeclare package Medium
-      = Medium) "Model to set the reference pressure" annotation (Placement(
+  DES.Ideal_Source.Heater_Chiller_noDyn HeaterChiller(redeclare package Medium =
+        Medium) "Model to set the reference pressure" annotation (Placement(
         transformation(
         extent={{-23,-21},{23,21}},
         origin={-533,3},

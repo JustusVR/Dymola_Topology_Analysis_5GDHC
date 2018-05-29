@@ -1,0 +1,48 @@
+within Topology_Analysis_5GDHC_DymolaModel.Validation;
+model Temperature_Degradation_v2
+
+  extends Modelica.Icons.Example;
+
+  replaceable package Medium = Buildings.Media.Water;
+  parameter Modelica.SIunits.MassFlowRate m_flow_nominal_district = 0.7252 " nominal mass flow rate of the whole district ";
+
+  Buildings.Fluid.Movers.FlowControlled_m_flow fan(redeclare package Medium =
+        Medium, m_flow_nominal=1)
+    annotation (Placement(transformation(extent={{-60,70},{-40,90}})));
+  Buildings.Fluid.FixedResistances.Pipe pip(
+    redeclare package Medium = Medium,
+    m_flow_nominal=1,
+    thicknessIns=0.06,
+    lambdaIns=0.04,
+    diameter=0.0889,
+    length=54)
+    annotation (Placement(transformation(extent={{-4,70},{16,90}})));
+  Buildings.Fluid.HeatExchangers.Heater_T hea(
+    redeclare package Medium = Medium,
+    m_flow_nominal=1,
+    dp_nominal=1)
+    annotation (Placement(transformation(extent={{-138,70},{-118,90}})));
+  Buildings.Fluid.Sources.FixedBoundary bou(nPorts=1, redeclare package Medium =
+        Medium)
+    annotation (Placement(transformation(extent={{-210,92},{-190,112}})));
+  Modelica.Blocks.Sources.Constant const(k=273.15 + 50)
+    annotation (Placement(transformation(extent={{-172,124},{-152,144}})));
+  Modelica.Blocks.Sources.Constant const1(k=1)
+    annotation (Placement(transformation(extent={{-82,118},{-62,138}})));
+equation
+
+  connect(hea.port_b, fan.port_a)
+    annotation (Line(points={{-118,80},{-60,80}}, color={0,127,255}));
+  connect(fan.port_b, pip.port_a)
+    annotation (Line(points={{-40,80},{-4,80}}, color={0,127,255}));
+  connect(pip.port_b, hea.port_a) annotation (Line(points={{16,80},{80,80},{80,0},
+          {-180,0},{-180,80},{-138,80}}, color={0,127,255}));
+  connect(pip.port_b, bou.ports[1]) annotation (Line(points={{16,80},{80,80},{
+          80,0},{-180,0},{-180,102},{-190,102}}, color={0,127,255}));
+  connect(const.y, hea.TSet) annotation (Line(points={{-151,134},{-146,134},{
+          -146,88},{-140,88}}, color={0,0,127}));
+  connect(fan.m_flow_in, const1.y) annotation (Line(points={{-50,92},{-56,92},{
+          -56,128},{-61,128}}, color={0,0,127}));
+  annotation (Diagram(coordinateSystem(extent={{-200,-200},{200,200}})),
+    Icon(coordinateSystem(extent={{-100,-120},{160,100}})));
+end Temperature_Degradation_v2;

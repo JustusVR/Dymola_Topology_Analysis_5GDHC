@@ -4,16 +4,23 @@ model Building_TA_LookUp
   replaceable package Medium =
       Modelica.Media.Interfaces.PartialMedium "Medium model for water";
 
-parameter Modelica.SIunits.HeatFlowRate Q_nominal_heat = 12240;
-parameter Modelica.SIunits.HeatFlowRate Q_nominal_cool = 19489;
+parameter Modelica.SIunits.HeatFlowRate Q_nominal_heat = 9154.55;
+parameter Modelica.SIunits.HeatFlowRate Q_nominal_cool = 19917.23;
+parameter Modelica.SIunits.HeatFlowRate Q_nominal = 19917.23;
 parameter Modelica.SIunits.TemperatureDifference dT_nominal= 6;
-parameter Modelica.SIunits.MassFlowRate m_flow_nominal = Q_nominal_cool/(cp_nominal*dT_nominal);
+parameter Modelica.SIunits.MassFlowRate m_flow_nominal = Q_nominal/(cp_nominal*dT_nominal);
 parameter Modelica.SIunits.HeatCapacity cp_nominal = 4187;
-parameter String Heating_DQ_File = Modelica.Utilities.Files.loadResource("modelica://Topology_Analysis_5GDHC_DymolaModel/Resources/Loads/LookUp_Table/heating_ambient.mos");
-parameter String Cooling_DQ_File = Modelica.Utilities.Files.loadResource("modelica://Topology_Analysis_5GDHC_DymolaModel/Resources/Loads/LookUp_Table/cooling_ambient.mos");
-parameter String Heating_HP_ele_File = Modelica.Utilities.Files.loadResource("modelica://Topology_Analysis_5GDHC_DymolaModel/Resources/Loads/LookUp_Table/heating_system.mos");
-parameter String Cooling_HP_ele_File = Modelica.Utilities.Files.loadResource("modelica://Topology_Analysis_5GDHC_DymolaModel/Resources/Loads/LookUp_Table/cooling_system.mos");
+parameter String Heating_DQ_File = Modelica.Utilities.Files.loadResource("modelica://Topology_Analysis_5GDHC_DymolaModel/Resources/Loads/LookUp_Table/heating_DistrictHeatingHotWaterEnergy_mass_flow_0.25.mos");
+parameter String Cooling_DQ_File = Modelica.Utilities.Files.loadResource("modelica://Topology_Analysis_5GDHC_DymolaModel/Resources/Loads/LookUp_Table/cooling_DistrictCoolingChilledWaterEnergy_mass_flow_0.75.mos");
+parameter String Heating_IQ_File = Modelica.Utilities.Files.loadResource("modelica://Topology_Analysis_5GDHC_DymolaModel/Resources/Loads/LookUp_Table/no_ets_HeatingElectricity.mos");
+parameter String Cooling_IQ_File = Modelica.Utilities.Files.loadResource("modelica://Topology_Analysis_5GDHC_DymolaModel/Resources/Loads/LookUp_Table/no_ets_CoolingElectricity.mos");
+parameter String Heating_HP_ele_File = Modelica.Utilities.Files.loadResource("modelica://Topology_Analysis_5GDHC_DymolaModel/Resources/Loads/LookUp_Table/heating_HeatingElectricity_mass_flow_0.25.mos");
+parameter String Cooling_HP_ele_File = Modelica.Utilities.Files.loadResource("modelica://Topology_Analysis_5GDHC_DymolaModel/Resources/Loads/LookUp_Table/cooling_CoolingElectricity_mass_flow_0.75.mos");
 parameter Boolean connected = true;
+parameter Modelica.SIunits.PressureDifference dp_nominal = 50000; // dp_nominal of HX taken from: https://www.euroheat.org/wp-content/uploads/2008/04/Euroheat-Power-Guidelines-District-Heating-Substations-2008.pdf, page 5
+parameter Boolean dynamics = true;
+final parameter Modelica.Fluid.Types.Dynamics energyDyn = if dynamics then Modelica.Fluid.Types.Dynamics.DynamicFreeInitial else Modelica.Fluid.Types.Dynamics.SteadyState;
+final parameter Boolean useFilter = dynamics;
 
 public
   Modelica.Fluid.Interfaces.FluidPort_a port_a(
@@ -30,18 +37,20 @@ public
     redeclare package Medium = Medium,
     addPowerToMedium=false,
     inputType=Buildings.Fluid.Types.InputType.Continuous,
-    energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
-    use_inputFilter=true,
-    m_flow_nominal=m_flow_nominal)
+    m_flow_nominal=m_flow_nominal,
+    use_inputFilter=useFilter,
+    energyDynamics=energyDyn,
+    m_flow_start=1)
     annotation (Placement(transformation(
-        extent={{-10,-10},{10,10}},rotation=0,origin={-80,140})));
+        extent={{-10,-10},{10,10}},rotation=0,origin={-80,138})));
   Buildings.Fluid.Movers.FlowControlled_m_flow pump_cool(
     redeclare package Medium = Medium,
     addPowerToMedium=false,
     inputType=Buildings.Fluid.Types.InputType.Continuous,
-    energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
-    use_inputFilter=true,
-    m_flow_nominal=m_flow_nominal)
+    m_flow_nominal=m_flow_nominal,
+    energyDynamics=energyDyn,
+    use_inputFilter=useFilter,
+    m_flow_start=1)
     annotation (Placement(transformation(extent={{10,10},{-10,-10}},rotation=0,origin={80,-140})));
 
 protected
@@ -49,7 +58,7 @@ protected
     annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
-        origin={0,-198})));
+        origin={0,-200})));
   Modelica.Blocks.Math.Gain control_heat(k=-1/(cp_nominal*dT_nominal))
                                                                       "Proportional Control for circulation pump of heat exchanger"
     annotation (Placement(transformation(
@@ -58,56 +67,62 @@ protected
         origin={0,200})));
 
 protected
-  Modelica.Blocks.Math.Gain propotional_Q_heat(k=1/(Q_nominal_heat))
+  Modelica.Blocks.Math.Gain propotional_Q_heat(k=1/(-Q_nominal_heat))
     annotation (Placement(transformation(
-        extent={{-10,-10},{10,10}},rotation=0,origin={-60,64})));
+        extent={{-5,-5},{5,5}},rotation=0,origin={-60,64})));
   Modelica.Blocks.Math.Gain proportional_Q_cool(k=1/(Q_nominal_cool))
     annotation (Placement(transformation(
-        extent={{-10,-10},{10,10}},rotation=0,origin={-60,-96})));
+        extent={{-5,-5},{5,5}},rotation=0,origin={-60,-96})));
 public
   Buildings.Fluid.HeatExchangers.HeaterCooler_u heat(
     redeclare package Medium = Medium,
-    energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
     m_flow_nominal=m_flow_nominal,
-    dp_nominal=30000,
-    Q_flow_nominal=Q_nominal_heat)
+    Q_flow_nominal=Q_nominal_heat,
+    dp_nominal(displayUnit="MPa") = dp_nominal,
+    homotopyInitialization=false,
+    energyDynamics=energyDyn)
     annotation (Placement(transformation(
         extent={{-20,-20},{20,20}},
         rotation=0,
         origin={0,140})));
 protected
   Buildings.Fluid.HeatExchangers.HeaterCooler_u cool(
-    m_flow_nominal=1,
     redeclare package Medium = Medium,
-    energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
-    dp_nominal=30000,
-    Q_flow_nominal=Q_nominal_cool)
+    Q_flow_nominal=Q_nominal_cool,
+    m_flow_nominal=m_flow_nominal,
+    dp_nominal(displayUnit="MPa") = dp_nominal,
+    homotopyInitialization=false,
+    energyDynamics=energyDyn)
     annotation (Placement(transformation(extent={{-20,-20},{20,20}},rotation=0,origin={0,-140})));
 
 public
   Modelica.Fluid.Valves.ValveDiscrete valve_a(
     redeclare package Medium = Medium,
-    m_flow_nominal=1,
-    dp_nominal=100000,
-    opening_min=1e-6)
+    opening_min=1e-6,
+    dp_nominal=0.1,
+    m_flow_nominal=m_flow_nominal)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,  origin={-140,-280})));
   Modelica.Fluid.Valves.ValveDiscrete valve_b(
     redeclare package Medium = Medium,
-    m_flow_nominal=1,
-    dp_nominal=100000,
-    opening_min=1e-6)
+    opening_min=1e-6,
+    m_flow_nominal=m_flow_nominal,
+    dp_nominal=0.1)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,  origin={140,-280})));
 protected
   Modelica.Blocks.Sources.BooleanConstant buildingConnected( k=connected)
     annotation (Placement(transformation(extent={{-12,-12},{12,12}},rotation=0,origin={-170,0})));
 public
   Loads.Load_Calc coolingLoad(DQ_FileName=Cooling_DQ_File, HP_ele_FileName=
-        Cooling_HP_ele_File) annotation (Placement(transformation(
+        Cooling_HP_ele_File,
+    IQ_FileName=Cooling_IQ_File)
+                             annotation (Placement(transformation(
         extent={{-20,-20},{20,20}},
         rotation=0,
         origin={-100,-80})));
   Loads.Load_Calc heatingLoad(DQ_FileName=Heating_DQ_File, HP_ele_FileName=
-        Heating_HP_ele_File) annotation (Placement(transformation(
+        Heating_HP_ele_File,
+    IQ_FileName=Heating_IQ_File)
+                             annotation (Placement(transformation(
         extent={{-20,-20},{20,20}},
         rotation=0,
         origin={-100,82})));
@@ -207,42 +222,55 @@ public
         extent={{-10,-10},{10,10}},
         rotation=90,
         origin={120,310})));
-  Modelica.Blocks.Sources.RealExpression TColIn(y=Medium.temperature_phX(
+  Modelica.Blocks.Sources.RealExpression T_PortB(y=Medium.temperature_phX(
+        p=port_b.p,
+        h=inStream(port_b.h_outflow),
+        X=cat(
+          1,
+          inStream(port_b.Xi_outflow),
+          {1 - sum(inStream(port_b.Xi_outflow))})))
+    "Cold water inlet temperature"
+    annotation (Placement(transformation(extent={{-180,-102},{-160,-82}})));
+  Modelica.Blocks.Sources.RealExpression TPortA(y=Medium.temperature_phX(
         p=port_a.p,
         h=inStream(port_a.h_outflow),
         X=cat(
           1,
           inStream(port_a.Xi_outflow),
-          {1 - sum(inStream(port_a.Xi_outflow))})))     "Cold water inlet temperature"
-    annotation (Placement(transformation(extent={{-194,-90},{-174,-70}})));
+          {1 - sum(inStream(port_a.Xi_outflow))})))
+    "Cold water inlet temperature"
+    annotation (Placement(transformation(extent={{-180,60},{-160,80}})));
+
 equation
 
   connect(control_cool.y,pump_cool. m_flow_in)
-    annotation (Line(points={{11,-198},{80,-198},{80,-152}},                                        color={0,0,127}));
+    annotation (Line(points={{11,-200},{80,-200},{80,-152}},                                        color={0,0,127}));
 
   connect(pump_heat.port_b, heat.port_a)
-    annotation (Line(points={{-70,140},{-20,140}},                      color={0,127,255}));
-  connect(control_cool.u, cool.Q_flow) annotation (Line(points={{-12,-198},{-38,-198},{-38,-172},{40,-172},{40,-128},{22,-128}},
-                                                                                                          color={0,0,127}));
-  connect(control_heat.u, heat.Q_flow) annotation (Line(points={{12,200},{40,200},{40,152},{22,152}},
-                                                                                                    color={0,0,127}));
-  connect(control_heat.y, pump_heat.m_flow_in) annotation (Line(points={{-11,200},{-80,200},{-80,152}}, color={0,0,127}));
+    annotation (Line(points={{-70,138},{-46,138},{-46,140},{-20,140}},  color={0,127,255}));
+  connect(control_cool.u, cool.Q_flow) annotation (Line(points={{-12,-200},{-38,
+          -200},{-38,-172},{40,-172},{40,-128},{22,-128}},                                                color={0,0,127}));
+  connect(control_heat.u, heat.Q_flow) annotation (Line(points={{12,200},{40,200},
+          {40,152},{22,152}},                                                                       color={0,0,127}));
+  connect(control_heat.y, pump_heat.m_flow_in) annotation (Line(points={{-11,200},
+          {-80,200},{-80,150}},                                                                         color={0,0,127}));
   connect(port_a, valve_a.port_b)
     annotation (Line(points={{-80,-300},{-80,-280},{-130,-280}},
                                                       color={0,127,255}));
   connect(buildingConnected.y, valve_a.open) annotation (Line(points={{-156.8,0},{-140,0},{-140,-272}},   color={255,0,255}));
   connect(cool.u, proportional_Q_cool.y) annotation (Line(points={{-24,-128},{
-          -40,-128},{-40,-96},{-49,-96}}, color={0,0,127}));
-  connect(proportional_Q_cool.u, coolingLoad.D_Load) annotation (Line(points={{-72,-96},
+          -40,-128},{-40,-96},{-54.5,-96}},
+                                          color={0,0,127}));
+  connect(proportional_Q_cool.u, coolingLoad.D_Load) annotation (Line(points={{-66,-96},
           {-78,-96}},                              color={0,0,127}));
   connect(buildingConnected.y, coolingLoad.u)
     annotation (Line(points={{-156.8,0},{-140,0},{-140,-80},{-124,-80}},       color={255,0,255}));
   connect(buildingConnected.y, heatingLoad.u)
     annotation (Line(points={{-156.8,0},{-140,0},{-140,82},{-124,82}},   color={255,0,255}));
   connect(heatingLoad.D_Load, propotional_Q_heat.u) annotation (Line(points={{-78,66},
-          {-76,66},{-76,64},{-72,64}},     color={0,0,127}));
-  connect(propotional_Q_heat.y, heat.u) annotation (Line(points={{-49,64},{-42,
-          64},{-42,152},{-24,152}},
+          {-76,66},{-76,64},{-66,64}},     color={0,0,127}));
+  connect(propotional_Q_heat.y, heat.u) annotation (Line(points={{-54.5,64},{
+          -42,64},{-42,152},{-24,152}},
                                 color={0,0,127}));
   connect(port_b, valve_b.port_a)
     annotation (Line(points={{80,-300},{80,-280},{130,-280}},
@@ -250,8 +278,8 @@ equation
   connect(buildingConnected.y, valve_b.open)
     annotation (Line(points={{-156.8,0},{-140,0},{-140,-242},{140,-242},{140,-272}},   color={255,0,255}));
   connect(cool.port_b, pump_cool.port_b) annotation (Line(points={{20,-140},{70,-140}}, color={0,127,255}));
-  connect(pump_heat.port_a, valve_a.port_a) annotation (Line(points={{-90,140},
-          {-222,140},{-222,-280},{-150,-280}}, color={0,127,255}));
+  connect(pump_heat.port_a, valve_a.port_a) annotation (Line(points={{-90,138},{
+          -222,138},{-222,-280},{-150,-280}},  color={0,127,255}));
   connect(cool.port_a, valve_a.port_a) annotation (Line(points={{-20,-140},{
           -222,-140},{-222,-280},{-150,-280}}, color={0,127,255}));
   connect(heat.port_b, valve_b.port_b) annotation (Line(points={{20,140},{220,
@@ -289,6 +317,10 @@ equation
     annotation (Line(points={{120,261},{120,310}}, color={0,0,127}));
   connect(Q_IC,Q_IC)
     annotation (Line(points={{120,310},{120,310}}, color={0,0,127}));
+  connect(coolingLoad.T_Inlet, T_PortB.y)
+    annotation (Line(points={{-124,-92},{-159,-92}}, color={0,0,127}));
+  connect(heatingLoad.T_Inlet, TPortA.y)
+    annotation (Line(points={{-124,70},{-159,70}}, color={0,0,127}));
   annotation (
     Diagram(coordinateSystem(extent={{-280,-300},{280,300}})),
     Icon(coordinateSystem(extent={{-280,-300},{280,300}}),graphics={

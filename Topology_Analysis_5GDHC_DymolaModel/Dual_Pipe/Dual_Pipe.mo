@@ -17,7 +17,8 @@ model Dual_Pipe
     lambdaIns=lambdaIns,
     length=length,
     redeclare package Medium = Medium,
-    diameter=diameter)
+    diameter=diameter,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyState)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,origin={0,60})));
   Buildings.Fluid.FixedResistances.Pipe pip_cold(
     m_flow_nominal=m_flow_nominal,
@@ -25,7 +26,8 @@ model Dual_Pipe
     lambdaIns=lambdaIns,
     length=length,
     redeclare package Medium = Medium,
-    diameter=diameter)
+    diameter=diameter,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyState)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,origin={0,-60})));
 
   Modelica.Fluid.Interfaces.FluidPort_a port_a_hot(redeclare final package
