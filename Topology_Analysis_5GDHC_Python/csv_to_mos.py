@@ -2,7 +2,7 @@ import csv
 from datetime import datetime
 import os
 
-def ConvertCSV_Mos(csvDir, buildingName):
+def ConvertCSV_Mos(csvDir, buildingName, typeColumns):
     mosDir = csvDir[:csvDir.rfind("/")] + "/TA/" +buildingName + "_mos_loads"
     fileName = mosDir + "/" + csvDir[(csvDir.rfind("/") + 1):csvDir.find(".csv")] + ".mos"
 
@@ -12,12 +12,12 @@ def ConvertCSV_Mos(csvDir, buildingName):
     CSVdata = parseCSV(csvDir)
     headers = CSVdata[0]
     column = CSVdata[1]
-    initMos(column, fileName)
+    initMos(column, fileName, typeColumns)
     with open(fileName, "a") as outfile:
         writer = csv.writer(outfile, delimiter=",")
         writer.writerow(headers)
         writer.writerows(zip(*[column[key] for key in headers]))
-    correctHeader(fileName, "datetime", str(0))
+    correctHeader(fileName, "datetime", str(0), typeColumns)
     return [fileName, nominalLoad(column)]
 
 def parseCSV(file):
@@ -33,7 +33,7 @@ def parseCSV(file):
                     dt = datetime.strptime(v, "%m/%d/%Y %H:%M")
                     r = ((dt.timetuple().tm_yday - 1) * 24 + dt.hour) * 3600
                 else:
-                    r = float(v)/3600
+                     r = round(float(v)/3600,0)
                 column[h].append(r)
     return [headers, column]
 
@@ -47,16 +47,22 @@ def nominalLoad(data):
             globalMax = localMax
     return round(globalMax, 2)
 
-def initMos(csvData, fileName):
+def initMos(csvData, fileName, typeColumns):
     initStr = "#1\n"
     initStr += "#column 1 = seconds of the year\n"
     initStr += "#column 2-10 = energy based on inlet temperature\n"
-    initStr += "double data(%d, %d)\n" % (len(csvData[csvData.keys()[0]])+1, len(csvData.keys()))
+    if typeColumns == "multiColumn":
+        size = len(csvData[csvData.keys()[0]])+1
+    elif typeColumns == "singleColumn":
+        size = len(csvData[csvData.keys()[0]])
+    else:
+        print "The type of the current CSV-File does not match with the possible Column Type"
+    initStr += "double data(%d, %d)\n" % (size, len(csvData.keys()))
     f = open(fileName, "w+")
     f.write(initStr)
     f.close()
 
-def correctHeader(file, oldStr, newStr):
+def correctHeader(file, oldStr, newStr, typeColumns):
     # in a mos-File no text is allowed, even if this is of no importance to the table
     # the header "datetime" has to be deleted
     # can only be done at the end, as this header is an important key for converting the csv-File to mos-File
@@ -64,7 +70,15 @@ def correctHeader(file, oldStr, newStr):
     filedata = f.read()
     f.close()
 
-    newdata = filedata.replace(oldStr, newStr)
+    if typeColumns == "singleColumn":
+        x1 = filedata.find(oldStr)
+        x2 = x1 + filedata[x1:].find("0,")
+        replaceStr = filedata[x1:x2]
+        newdata = filedata.replace(replaceStr, "")
+    elif typeColumns == "multiColumn":
+        newdata = filedata.replace(oldStr, newStr)
+    else:
+        print "The type of the current CSV-File does not match with the possible Column Type"
 
     f = open(file, 'w')
     f.write(newdata)
@@ -72,12 +86,20 @@ def correctHeader(file, oldStr, newStr):
 
 def main():
     dirname = os.path.dirname(os.path.abspath(__file__))
-    files = [ dirname + '/loads/cooling_DistrictCoolingChilledWaterEnergy_mass_flow_0.75.csv', dirname + '/loads/cooling_CoolingElectricity_mass_flow_0.75.csv', dirname + '/loads/heating_DistrictHeatingHotWaterEnergy_mass_flow_0.25.csv', dirname + '/loads/heating_HeatingElectricity_mass_flow_0.25.csv']
-    testMosDir = 'test1'
-    for file in files:
-        print ConvertCSV_Mos(file, testMosDir)
+    files_multiColumn = [dirname + '/loads/cooling_DistrictCoolingChilledWaterEnergy_mass_flow_0.75.csv',
+                         dirname + '/loads/cooling_CoolingElectricity_mass_flow_0.75.csv',
+                         dirname + '/loads/heating_DistrictHeatingHotWaterEnergy_mass_flow_0.25.csv',
+                         dirname + '/loads/heating_HeatingElectricity_mass_flow_0.25.csv']
+    files_singleColumn = [dirname + '/loads/no_ets_HeatingElectricity.csv',
+                          dirname + '/loads/no_ets_CoolingElectricity.csv']
 
-
+    #validationdir = '/Users/justusvonrhein/Documents/Colorado/Ambient_Loops/Validation/CSV_Data'
+    #validationFiles = [validationdir + '/FM01FY.csv', validationdir + '/TM02TY.csv', validationdir + '/TM20TY.csv']
+    MosDir = 'TEST'
+    for file in files_multiColumn:
+        print ConvertCSV_Mos(file, MosDir, "multiColumn")
+    for file in files_singleColumn:
+        print ConvertCSV_Mos(file, MosDir, "singleColumn")
 
 if __name__ == '__main__':
     main()

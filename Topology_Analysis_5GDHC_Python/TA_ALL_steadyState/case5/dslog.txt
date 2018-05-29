@@ -1,0 +1,102 @@
+Log-file of program ./dymosim
+(generated: Thu May 24 17:38:58 2018)
+
+dymosim started
+... "dsin.txt" loading (dymosim input file)
+Office1.pump_heat.nominalValuesDefineDefaultPressureCurve
+The following was detected at time: 0
+*** Warning: You are using a flow or pressure controlled mover with the
+             default pressure curve.
+             This leads to approximate calculations of the electrical power
+             consumption. Add the correct pressure curve in the record per
+             to obtain an accurate computation.
+             Setting nominalValuesDefineDefaultPressureCurve=true will suppress this warning.
+Office1.pump_cool.nominalValuesDefineDefaultPressureCurve
+The following was detected at time: 0
+*** Warning: You are using a flow or pressure controlled mover with the
+             default pressure curve.
+             This leads to approximate calculations of the electrical power
+             consumption. Add the correct pressure curve in the record per
+             to obtain an accurate computation.
+             Setting nominalValuesDefineDefaultPressureCurve=true will suppress this warning.
+Office2.pump_heat.nominalValuesDefineDefaultPressureCurve
+The following was detected at time: 0
+*** Warning: You are using a flow or pressure controlled mover with the
+             default pressure curve.
+             This leads to approximate calculations of the electrical power
+             consumption. Add the correct pressure curve in the record per
+             to obtain an accurate computation.
+             Setting nominalValuesDefineDefaultPressureCurve=true will suppress this warning.
+Office2.pump_cool.nominalValuesDefineDefaultPressureCurve
+The following was detected at time: 0
+*** Warning: You are using a flow or pressure controlled mover with the
+             default pressure curve.
+             This leads to approximate calculations of the electrical power
+             consumption. Add the correct pressure curve in the record per
+             to obtain an accurate computation.
+             Setting nominalValuesDefineDefaultPressureCurve=true will suppress this warning.
+Office3.pump_heat.nominalValuesDefineDefaultPressureCurve
+The following was detected at time: 0
+*** Warning: You are using a flow or pressure controlled mover with the
+             default pressure curve.
+             This leads to approximate calculations of the electrical power
+             consumption. Add the correct pressure curve in the record per
+             to obtain an accurate computation.
+             Setting nominalValuesDefineDefaultPressureCurve=true will suppress this warning.
+Office3.pump_cool.nominalValuesDefineDefaultPressureCurve
+The following was detected at time: 0
+*** Warning: You are using a flow or pressure controlled mover with the
+             default pressure curve.
+             This leads to approximate calculations of the electrical power
+             consumption. Add the correct pressure curve in the record per
+             to obtain an accurate computation.
+             Setting nominalValuesDefineDefaultPressureCurve=true will suppress this warning.
+... loading "data" from "/home/justus/Documents/Topology_Analysis_5GDHC_Python_2305/loads/TA/Office1_mos_loads/lookup_DistrictCoolingChilledWaterEnergy.mos"
+... loading "data" from "/home/justus/Documents/Topology_Analysis_5GDHC_Python_2305/loads/TA/Office1_mos_loads/lookup_CoolingElectricity.mos"
+... loading "data" from "/home/justus/Documents/Topology_Analysis_5GDHC_Python_2305/loads/TA/Office1_mos_loads/no_ets_CoolingElectricity.mos"
+... loading "data" from "/home/justus/Documents/Topology_Analysis_5GDHC_Python_2305/loads/TA/Office1_mos_loads/lookup_DistrictHeatingHotWaterEnergy.mos"
+... loading "data" from "/home/justus/Documents/Topology_Analysis_5GDHC_Python_2305/loads/TA/Office1_mos_loads/lookup_HeatingElectricity.mos"
+... loading "data" from "/home/justus/Documents/Topology_Analysis_5GDHC_Python_2305/loads/TA/Office1_mos_loads/no_ets_HeatingElectricity.mos"
+... loading "data" from "/home/justus/Documents/Topology_Analysis_5GDHC_Python_2305/loads/TA/Office2_mos_loads/lookup_DistrictCoolingChilledWaterEnergy.mos"
+... loading "data" from "/home/justus/Documents/Topology_Analysis_5GDHC_Python_2305/loads/TA/Office2_mos_loads/lookup_CoolingElectricity.mos"
+... loading "data" from "/home/justus/Documents/Topology_Analysis_5GDHC_Python_2305/loads/TA/Office2_mos_loads/no_ets_CoolingElectricity.mos"
+... loading "data" from "/home/justus/Documents/Topology_Analysis_5GDHC_Python_2305/loads/TA/Office2_mos_loads/lookup_DistrictHeatingHotWaterEnergy.mos"
+... loading "data" from "/home/justus/Documents/Topology_Analysis_5GDHC_Python_2305/loads/TA/Office2_mos_loads/lookup_HeatingElectricity.mos"
+... loading "data" from "/home/justus/Documents/Topology_Analysis_5GDHC_Python_2305/loads/TA/Office2_mos_loads/no_ets_HeatingElectricity.mos"
+... loading "data" from "/home/justus/Documents/Topology_Analysis_5GDHC_Python_2305/loads/TA/Office3_mos_loads/lookup_DistrictCoolingChilledWaterEnergy.mos"
+... loading "data" from "/home/justus/Documents/Topology_Analysis_5GDHC_Python_2305/loads/TA/Office3_mos_loads/lookup_CoolingElectricity.mos"
+... loading "data" from "/home/justus/Documents/Topology_Analysis_5GDHC_Python_2305/loads/TA/Office3_mos_loads/no_ets_CoolingElectricity.mos"
+... loading "data" from "/home/justus/Documents/Topology_Analysis_5GDHC_Python_2305/loads/TA/Office3_mos_loads/lookup_DistrictHeatingHotWaterEnergy.mos"
+... loading "data" from "/home/justus/Documents/Topology_Analysis_5GDHC_Python_2305/loads/TA/Office3_mos_loads/lookup_HeatingElectricity.mos"
+... loading "data" from "/home/justus/Documents/Topology_Analysis_5GDHC_Python_2305/loads/TA/Office3_mos_loads/no_ets_HeatingElectricity.mos"
+... loading "tab1" from "/home/justus/Documents/Topology_Analysis_5GDHC_DymolaModel/Resources/Weather_File/USA_CO_Golden-NREL.724666_TMY3dy.mos"
+... "dsres.mat" creating (simulation result file)
+
+Integration started at T = 0 using integration method DASSL
+(DAE multi-step solver (dassl/dasslrt of Petzold modified by Dynasim))
+
+... Warning message from dymosim
+At time T = 5.853298e+04 in current integration interval
+T_interval = 0.000000e+00 ... 6.307200e+04
+a large amount of work has been expended
+(about 500 steps) in the integrator. Probably the communication
+interval is too large or the system is stiff.
+
+Integration terminated successfully at T = 31536000
+   CPU-time for integration      : 133 seconds
+   CPU-time for one GRID interval: 265 milli-seconds
+   Number of result points       : 504
+   Number of GRID   points       : 501
+   Number of (successful) steps  : 131362
+   Number of F-evaluations       : 1900393
+   Number of H-evaluations       : 131875
+   Number of Jacobian-evaluations: 24331
+   Number of (model) time events : 0
+   Number of (U) time events     : 0
+   Number of state    events     : 1
+   Number of step     events     : 0
+   Minimum integration stepsize  : 0.0204
+   Maximum integration stepsize  : 1.25e+04
+   Maximum integration order     : 5
+Calling terminal section
+... "dsfinal.txt" creating (final states)

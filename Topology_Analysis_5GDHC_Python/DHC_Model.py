@@ -37,55 +37,99 @@ class Pipe(ModelicaModel):
         self.model2 = model2
 
 
-def SetTemplateModel(data, modelicadir, loads):
+def SetTemplateModel(data, modelicadir, loads, dynamics):
     global modellist, pipeList, stepSize
     pipeList = []
     modellist = []
 
-    replaceablePackages = ["Medium = Buildings.Media.Water"]
-    parameters = ["Modelica.SIunits.MassFlowRate m_flow_nominal = 1"]
-    extendedModuls = ["Modelica.Icons.Example"]
+    cp_nominal = 4187
+    dT_nominal = 6
 
     prosumerModel = "Building.Automated_Model_Building.Building_TA_LookUp"
-    sourceModel = "Topology_Analysis_5GDHC_DymolaModel.DES.Ideal_T_JVR"
+    sourceModel = "Topology_Analysis_5GDHC_DymolaModel.DES.Heat_Pump"
+    #sourceModel = "Topology_Analysis_5GDHC_DymolaModel.DES.Ideal_T_JVR"
     nodeModel = "Buildings.Fluid.Delays.DelayFirstOrder"
     dualPipeModel = "Topology_Analysis_5GDHC_DymolaModel.Dual_Pipe.Dual_Pipe_HeatLoss"
 
     stepSize = max((len(data) * 20), 140)  # stepsize = edge length of a quadrant in the dymola grid
-    SetModellist(data, prosumerModel, sourceModel, nodeModel, loads)
+    SetModellist(data, prosumerModel, sourceModel, nodeModel, loads, cp_nominal, dT_nominal, dynamics)
     connectionMatrix = setConnectionMatrix(len(modellist))
     SetPipelist(connectionMatrix, dualPipeModel)
+
+    replaceablePackages = ["Medium = Buildings.Media.Water"]
+    parameters = ["Modelica.SIunits.MassFlowRate m_flow_nominal_district = %s \" nominal mass flow rate of the whole district \" "  %(str(float(format(m_flow_nominal_district, '.4g')))), \
+                  "Modelica.SIunits.TemperatureDifference dT_nominal = " + str(dT_nominal), \
+                  "Modelica.SIunits.HeatCapacity cp_nominal = " + str(cp_nominal) \
+                  ]
+    extendedModuls = ["Modelica.Icons.Example"]
     create5GDHCModel(GetDHCModulName(), extendedModuls, replaceablePackages, parameters, modelicadir)
+
     return modellist, pipeList
 
 def GetDHCModulName():
     dhcModel = "Test.mo"
     return dhcModel
 
-def SetModellist(data, prosumerModel, sourceModel, nodeModel, loads):
+def SetModellist(data, prosumerModel, sourceModel, nodeModel, loads, cp_nominal, dT_nominal, dynamics):
+    Q_nominal_total = 0
+    DES = []
     for b in data:
         # defining the prosumer and source models, based on the data from the geoJson file
         pos = [(b[3][0] * stepSize + stepSize/2), (b[3][1] * stepSize + stepSize/2)]
         name = adjustName(b[1])
-        node = [0,0]
-        node[0] = Node(nodeModel,(name + "_node_a"),nodePos(pos,-5,-37),6,0,["nPorts=%d" % (len(data)),"redeclare package Medium = Medium","m_flow_nominal=1"])
-        node[1] = Node(nodeModel,(name + "_node_b"), nodePos(pos, +5, -37), 6, 0,["nPorts=%d" % (len(data)), "redeclare package Medium = Medium", "m_flow_nominal=1"])
         if b[0] == "Building":
-            coolingDLoad = cm.ConvertCSV_Mos(loads[b[1]].cooling_ChilledWaterEnergy, name)
+            coolingDLoad = cm.ConvertCSV_Mos(loads[b[1]].cooling_ChilledWaterEnergy, name, "multiColumn")
             coolingDLoad_File = "Cooling_DQ_File = \"" + coolingDLoad[0] + "\""
             coolingDLoad_nominal = "Q_nominal_cool = " + str(coolingDLoad[1])
-            coolingEle = cm.ConvertCSV_Mos(loads[b[1]].cooling_Electricity, name)
+            coolingEle = cm.ConvertCSV_Mos(loads[b[1]].cooling_Electricity, name, "multiColumn")
             coolingEle_File = "Cooling_HP_ele_File =\"" + coolingEle[0] + "\""
-            heatingDLoad = cm.ConvertCSV_Mos(loads[b[1]].heating_HotWaterEnergy, name)
+            heatingDLoad = cm.ConvertCSV_Mos(loads[b[1]].heating_HotWaterEnergy, name, "multiColumn")
             heatingDLoad_File = "Heating_DQ_File =\"" + heatingDLoad[0] + "\""
             heatingDLoad_nominal = "Q_nominal_heat = " + str(heatingDLoad[1])
-            heatingEle = cm.ConvertCSV_Mos(loads[b[1]].heating_Electricity, name)
+            heatingEle = cm.ConvertCSV_Mos(loads[b[1]].heating_Electricity, name, "multiColumn")
             heatingEle_File = "Heating_HP_ele_File = \"" + heatingEle[0] + "\""
-            modellist.append(Prosumer(prosumerModel, name, pos, 40, 0, ["redeclare package Medium = Medium", coolingDLoad_File, coolingEle_File, heatingDLoad_File, heatingEle_File, heatingDLoad_nominal, coolingDLoad_nominal], b[0], b[2], node))
+            noETS_heatingEle = cm.ConvertCSV_Mos(loads[b[1]].noETS_heating_Electricity, name, "singleColumn")
+            noETS_heatingEle_File = "Heating_IQ_File = \"" + noETS_heatingEle[0] + "\""
+            noETS_coolingEle = cm.ConvertCSV_Mos(loads[b[1]].noETS_cooling_Electricity, name, "singleColumn")
+            noETS_coolingEle_File = "Cooling_IQ_File = \"" + noETS_coolingEle[0] + "\""
+            Q_nominal = "Q_nominal = " + str(Set_Q_nominal(heatingDLoad[1], coolingDLoad[1]))
+            Q_nominal_total += Set_Q_nominal(heatingDLoad[1], coolingDLoad[1])
+            if dynamics:
+                dyn = "dynamics = true"
+            else:
+                dyn = "dynamics = false"
+            node = SetNode(nodeModel, name, pos, len(data), cp_nominal, dT_nominal, Set_Q_nominal(heatingDLoad[1], coolingDLoad[1]))
+            modellist.append(Prosumer(prosumerModel, name, pos, 40, 0, ["redeclare package Medium = Medium", coolingDLoad_File, coolingEle_File, heatingDLoad_File, heatingEle_File, heatingDLoad_nominal, coolingDLoad_nominal, noETS_heatingEle_File, noETS_coolingEle_File, Q_nominal, dyn ], b[0], b[2], node))
         elif b[0] == "District System":
-            modellist.append(Prosumer(sourceModel, name, pos, 40, 0, ["redeclare package Medium = Medium", "m_flow_nominal=1"], b[0], b[2], node))
+            DES.append(b)
         else:
             print "This Model is not known"
+    for source in DES:
+        pos = [(source[3][0] * stepSize + stepSize / 2), (source[3][1] * stepSize + stepSize / 2)]
+        name = adjustName(source[1])
+        node = SetNode(nodeModel, name, pos, len(data), cp_nominal, dT_nominal, Q_nominal_total)
+        #m_flow_nominal_district = Q_nominal_total/(cp_nominal * dT_nominal)
+        m_flow_nominal_district = Set_m_flow_nominal_district(Q_nominal_total, cp_nominal, dT_nominal)
+        modellist.append(Prosumer(sourceModel, name, pos, 40, 0, ["redeclare package Medium = Medium", "m_flow_nominal = " + str(m_flow_nominal_district)], source[0], source[2], node))
+
+def Set_m_flow_nominal_district(Q_nominal_total, cp_nominal, dT_nominal):
+    global m_flow_nominal_district
+    m_flow_nominal_district = Q_nominal_total / (cp_nominal * dT_nominal)
+    return m_flow_nominal_district
+
+def Set_Q_nominal(heatingDLoad_nominal, coolingDLoad_nominal):
+    if heatingDLoad_nominal > coolingDLoad_nominal:
+        return heatingDLoad_nominal
+    else:
+        return coolingDLoad_nominal
+
+def SetNode(nodeModel, name, pos, ports, cp_nominal, dT_nominal, Q_nominal):
+    node = [0, 0]
+    m_flow_nominal = Q_nominal/(cp_nominal * dT_nominal)
+    p_m_flow_nominal = "m_flow_nominal = " + str(m_flow_nominal) + "  \" derives from the nominal heat flow of the node's prosumer: Q_nominal_prosumer/(cp_nominal * dT_nominal) \" "
+    node[0] = Node(nodeModel, (name + "_node_a"), nodePos(pos, -5, -37), 6, 0, ["nPorts=%d" % (ports), "redeclare package Medium = Medium", p_m_flow_nominal])
+    node[1] = Node(nodeModel, (name + "_node_b"), nodePos(pos, +5, -37), 6, 0, ["nPorts=%d" % (ports), "redeclare package Medium = Medium", "m_flow_nominal = " + str(m_flow_nominal)])
+    return node
 
 def SetPipelist(connectionMatrix, pipeModel):
     xStart = -1
@@ -111,8 +155,7 @@ def SetPipelist(connectionMatrix, pipeModel):
                     stepYrel = (s) / (nPipes - 1)
                     relY = stepYrel * pipe - s / 2
                 pipe += 1
-                pipeList.append(defineDualPipe(pipeModel, modellist[i], modellist[x], relY))
-                # print "pos: ", i, ",", x ," : ", modellist[i].name, " and ", modellist[x].name, "with relY:", relY
+                pipeList.append(defineDualPipe(pipeModel, modellist[i], modellist[x], relY, "m_flow_nominal_district"))
 
 def setConnectionMatrix(size):
     # creating a symmetrical matrix for setting the pipes to connect the buildings
@@ -307,13 +350,13 @@ def pathConnectNodesModel(posModel, sizeModel, posNode, sizeNode):
     points.append([posNode[0], posNode[1] - sizeNode/2])
     return pathPoints(points)
 
-def defineDualPipe(dualPipeModul, model1, model2, relY):
+def defineDualPipe(dualPipeModul, model1, model2, relY, m_flow_nominal):
     #relY is the relative Y-Position of the pipe to the model1
     x = model1.pos[0] + model1.size / 2 + 20 + 10
     y = model1.pos[1] + relY
     pos = [x, y]
     length = round(geopy.distance.vincenty(model1.coords, model2.coords).m, 0)
-    parameters = ["redeclare package Medium = Medium",("length=%d" %(length)), "m_flow_nominal=1"]
+    parameters = ["redeclare package Medium = Medium",("length=%d" %(length)), "m_flow_nominal=%s" %(m_flow_nominal)]
     name = "Pipe_%s_%s" % (model1.name, model2.name)
     pipe = Pipe(dualPipeModul, name, pos, 10, 0, parameters, model1, model2)
     return pipe
@@ -377,19 +420,19 @@ def relPoint(start, relPath, onEdge = False):
     return point
 
 
-
 def main():
     import ReadGeojson
     import GeoJson_Parser_Nic
     dirname = os.path.dirname(os.path.abspath(__file__))
-    urbanOptFile = dirname + '/GeoJson/exportGeo_2.json'
-    modelicaDir = '/home/justus/Documents/Topology_Analysis_5GDHC_DymolaModel/Automated_5GDHC'
-    #modelicaDir = dirname + '/Modelica_5GDHC_TemplateModel'
+    urbanOptFile = dirname + '/GeoJson/exportGeo_NREL_Presentation.json'
+    #modelicaDir = '/home/justus/Documents/Topology_Analysis_5GDHC_DymolaModel/Automated_5GDHC'
+    modelicaDir = dirname + '/Modelica_5GDHC_TemplateModel'
     loadDir = dirname + "/loads"
+    dynamics = False
 
     loads = GeoJson_Parser_Nic.GetBuildingLoads(loadDir, urbanOptFile)
     data = ReadGeojson.GetData(urbanOptFile)
-    tempModel = SetTemplateModel(data, modelicaDir, loads)
+    tempModel = SetTemplateModel(data, modelicaDir, loads, dynamics)
     return tempModel
 
 

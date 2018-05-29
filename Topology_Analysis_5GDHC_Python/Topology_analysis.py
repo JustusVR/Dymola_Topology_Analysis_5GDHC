@@ -13,24 +13,24 @@ class ProsumerConnection:
         self.model1 = model1
         self.model2 = model2
 
-def SetSimulations(urbanOptFile, case, modelicaDir, alwaysActiveProsumers, loads):
+def SetSimulations(urbanOptFile, case, modelicaDir, alwaysActiveProsumers, loads, dynamics):
     simulationTopologies = []
     if not os.path.exists(modelicaDir):
         print "Error: The modelica path does not exist. Please adjust this!"
         return
 
-    Set_5GDHC_TempModel(urbanOptFile, modelicaDir, loads)
+    Set_5GDHC_TempModel(urbanOptFile, modelicaDir, loads, dynamics)
     activeProsumerList = SetActiveProsumers(alwaysActiveProsumers)
     for activeProsumers in activeProsumerList:
         simulationTopologies.append(SetScenarioTopologies(activeProsumers, case))
     return simulationTopologies
 
-def Set_5GDHC_TempModel(GeoJsonFile, modelicadir, loads):
+def Set_5GDHC_TempModel(GeoJsonFile, modelicadir, loads, dynamics):
     global modellist
     global pipelist
     urbanOptFile = GeoJsonFile
     data = ReadGeojson.GetData(urbanOptFile)
-    tempModel = DHC_Model.SetTemplateModel(data, modelicadir, loads)
+    tempModel = DHC_Model.SetTemplateModel(data, modelicadir, loads, dynamics)
     modellist = tempModel[0]
     pipelist = tempModel[1]
     return tempModel
@@ -68,18 +68,6 @@ def SetScenarioTopologies(activeProsumers, case):
     else:
         print "This Case is not known"
 
-    for am in aMatrices:
-        activePipes.append(FindPathPipes(am))
-    for p in activePipes:
-        parameters.append(SetSimulationParameters(activeProsumers, p))
-    simulations = [activeProsumers, aMatrices, activePipes, parameters]
-    return simulations
-
-def SetScenarioTopologies_ST(activeProsumers):
-    #for the active Prosumers, define all possible spanning trees and their adjancency matrices
-    activePipes = []
-    parameters = []
-    aMatrices = SetAMatrices_ST(activeProsumers)
     for am in aMatrices:
         activePipes.append(FindPathPipes(am))
     for p in activePipes:
@@ -149,7 +137,6 @@ def SetAMatrices_WithBFSearch(activeProsumers):
             graph = createGraph(subset)
             if connectedGraphCheck(graph, activeProsumers) == True:
                 aMatrices.append(createAMatrix(modellist, subset))
-    #print len(aMatrices)
     return aMatrices
 
 def createGraph(edges):
@@ -208,6 +195,7 @@ def createAMatrix(verticesMasterGraph, edges):
 
 def SetSimulationParameters(activeProsumers, activePipes):
     # based on the active buildings and active Pipes for the simulation the modellist and pipelist is translated for the buildingsPy package
+    # set paramters for the translated model
     parameters = []
     for m in modellist:
         if m in activeProsumers:
@@ -309,6 +297,8 @@ def SetScenarioConnectionMatrices_WithEigenvalue(activeProsumers):
 def main():
     # case = ALL: Exhaustive Search of all possible topologies
     # case = ST: Analysing all possible "Spanning-Tree" topologies
+    case = "ST"
+    dynamics = False
     dirname = os.path.dirname(os.path.abspath(__file__))
     #modelicaDir = '/home/justus/Documents/Topology_Analysis_5GDHC/Automated_5GDHC'
     modelicaDir = dirname + '/Modelica_5GDHC_TemplateModel'
@@ -316,7 +306,7 @@ def main():
     urbanOptFile = dirname + '/GeoJson/exportGeo_2.json'
     loadDir = dirname + "/loads"
     loads = GeoJson_Parser_Nic.GetBuildingLoads(loadDir, urbanOptFile)
-    scenario = SetSimulations(case = "ST", urbanOptFile = urbanOptFile, modelicaDir=modelicaDir, alwaysActiveProsumers=alwaysActiveProsumers, loads=loads)
+    scenario = SetSimulations(case = case, urbanOptFile = urbanOptFile, modelicaDir=modelicaDir, alwaysActiveProsumers=alwaysActiveProsumers, loads=loads, dynamics=dynamics)
     i = 0
     for s in scenario:
         for ta in s[1]:
